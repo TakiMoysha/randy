@@ -31,8 +31,9 @@ nvidia = [ "nvml-wrapper" ]
 glib = "0.10"
 gio = "0.9"
 gtk = "0.9"
-yaml-rust = "0.4"
 libc = "0.2"
 lazy_static = "1.4"
 sensors = { version = "0.2", optional = true }
 nvml-wrapper = { version = "0.6", optional = true }
+clap = { version = "4.5.27", features = ["derive"] }
+serde_yml = "0.0.12"
