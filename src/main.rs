@@ -10,7 +10,6 @@ extern crate gtk;
 // mod deets;
 // mod file_utils;
 use gio::prelude::*;
-use gtk::prelude::*;
 
 use std::collections::HashMap;
 use std::sync::Mutex;
@@ -62,28 +61,36 @@ lazy_static! {
 // mod css;
 
 // mod _helpers;
-mod config;
-
+use glib;
 use clap::{command, Parser};
+use gtk::prelude::{ApplicationExt, ApplicationExtManual, *};
+
+mod config;
+mod ui;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 struct Args {
     #[arg(short, long)]
-    config: String,
+    config: Option<String>,
 }
 
-fn main() {
+const APP_ID: &str = "org.ahands.randy";
+
+fn main() -> glib::ExitCode {
     let args = Args::parse();
 
-    println!("Config: {}", args.config);
+    println!("Config: {:?}", args.config);
 
-    // let application = gtk::Application::new(Some("org.ahands.randy"), Default::default())
-    //     .expect("Initialization failed...");
-    //
+    let app = gtk::Application::builder()
+        .application_id(APP_ID)
+        .flags(Default::default())
+        .build();
+
+    app.connect_activate(ui::build_ui);
     // application.connect_activate(|app| {
     //     build_ui(app, config::get_config(&args.config));
     // });
-    //
-    // application.run(&Vec::new());
+
+    app.run();
 }

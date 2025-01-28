@@ -28,12 +28,13 @@ packaged = []
 nvidia = [ "nvml-wrapper" ]
 
 [dependencies]
-glib = "0.10"
+gtk = "0.18.2"
+serde_yml = "0.0.12"
+clap = { version = "4.5.27", features = ["derive"] }
+# update process ...
+glib = "0.20.7"
 gio = "0.9"
-gtk = "0.9"
 libc = "0.2"
 lazy_static = "1.4"
 sensors = { version = "0.2", optional = true }
 nvml-wrapper = { version = "0.6", optional = true }
-clap = { version = "4.5.27", features = ["derive"] }
-serde_yml = "0.0.12"

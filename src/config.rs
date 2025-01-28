@@ -17,7 +17,7 @@ const DEFAULT_PATHS: [&str; 5] = [
     "/etc/randy.yml",
 ];
 
-pub fn try_get_file() -> Option<String> {
+fn try_get_file() -> Option<String> {
     let home = std::env::var("HOME").unwrap_or("".to_string());
     if home != "" {
         let cfg = format!("{}/.randy.yml", home);
@@ -71,7 +71,7 @@ Exmples: https://github.com/iphands/randy/tree/main/config"#,
 pub fn read_config(path: PathBuf) -> HashMap<String, serde_yml::Value> {
     let file = File::open(path).expect("Unable to open config file");
     let reader = BufReader::new(file);
-    return serde_yml::from_reader(reader).expect("Unable to parse config file");
+    serde_yml::from_reader(reader).expect("Unable to parse config file")
 }
 
 // pub fn get_config(yaml_str: &str) -> Vec<ConfigString> {
