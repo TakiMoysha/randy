@@ -1,22 +1,45 @@
 use std::{
     collections::HashMap,
     fs::{self, File},
-    io::{BufRead, BufReader},
+    io::BufReader,
     path::PathBuf,
 };
 
-use serde_yml::to_string;
+const SUPPORTED_FORMATS: [&str; 2] = ["yml", "toml"];
+const DEFAULT_NAME: [&str; 2] = ["randy", ".randy"];
+const DEFAULT_PATHS: [&str; 3] = ["XDG_CONFIG_HOME", "HOME", "/etc/"];
 
-use crate::stubs::ConfigString;
+fn build_full_paths() -> Vec<PathBuf> {
+    let mut paths = Vec::new();
+    for path in DEFAULT_PATHS {
+        if let Ok(path) = std::env::var(path) {
+            for name in DEFAULT_NAME {
+                for format in SUPPORTED_FORMATS {
+                    paths.push(PathBuf::from(format!("{path}/{name}.{format}")));
+                }
+            }
+        } else {
+            for name in DEFAULT_NAME {
+                for format in SUPPORTED_FORMATS {
+                    paths.push(PathBuf::from(format!("{path}/{name}.{format}")));
+                }
+            }
+        }
+    }
+    paths
+}
 
-const DEFAULT_PATHS: [&str; 5] = [
-    "$XDG_CONFIG_HOME/randy.yml",
-    "$HOME/.randy.yml",
-    "$HOME/randy.yml",
-    "$XDG_CONFIG_HOME/.randy.yml",
-    "/etc/randy.yml",
-];
+fn find_first_default_config() -> Option<PathBuf> {
+    let paths = build_full_paths();
+    paths.iter().find(|f| f.exists()).cloned()
+}
 
+pub fn load_default_config() {
+    let path = find_first_default_config().expect("Unable to find default config");
+    load_config(path)
+}
+
+// ###
 fn try_get_file() -> Option<String> {
     let home = std::env::var("HOME").unwrap_or("".to_string());
     if home != "" {
@@ -83,9 +106,28 @@ pub fn read_config(path: PathBuf) -> HashMap<String, serde_yml::Value> {
 // return yaml;
 // }
 
+pub fn load_config(path: PathBuf) {}
+
 #[cfg(test)]
 mod config_tests {
     use super::*;
+
+    #[test]
+    fn should_get_all_paths() {
+        let paths = build_full_paths();
+        println!("!!!!!{:?}", paths);
+        assert!(!paths.is_empty());
+    }
+
+    #[test]
+    fn should_return_default_config() {
+        std::env::set_var(
+            "XDG_CONFIG_HOME",
+            std::env::current_dir().unwrap().join("config"),
+        );
+        let path = find_first_default_config();
+        assert!(path.is_some(), "Can't find default config, it exists?");
+    }
 
     #[test]
     fn should_read_file_config() {

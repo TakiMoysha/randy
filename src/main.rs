@@ -5,6 +5,7 @@ extern crate lazy_static;
 extern crate gio;
 extern crate gtk;
 
+use config::{load_config, load_default_config};
 #[macro_use]
 // mod macros;
 // mod deets;
@@ -61,9 +62,12 @@ lazy_static! {
 // mod css;
 
 // mod _helpers;
-use glib;
 use clap::{command, Parser};
-use gtk::prelude::{ApplicationExt, ApplicationExtManual, *};
+use gtk::{
+    glib::ExitCode,
+    prelude::{ApplicationExt, ApplicationExtManual},
+};
+use std::path::PathBuf;
 
 mod config;
 mod ui;
@@ -77,10 +81,15 @@ struct Args {
 
 const APP_ID: &str = "org.ahands.randy";
 
-fn main() -> glib::ExitCode {
+fn main() -> ExitCode {
     let args = Args::parse();
 
     println!("Config: {:?}", args.config);
+
+    let config = match args.config.is_none() {
+        true => config::load_default_config(),
+        false => config::load_config(PathBuf::from(args.config.unwrap())),
+    };
 
     let app = gtk::Application::builder()
         .application_id(APP_ID)
@@ -92,5 +101,5 @@ fn main() -> glib::ExitCode {
     //     build_ui(app, config::get_config(&args.config));
     // });
 
-    app.run();
+    app.run()
 }

@@ -965,6 +965,7 @@ dependencies = [
  "libc",
  "nvml-wrapper",
  "sensors",
+ "serde",
  "serde_yml",
 ]
 

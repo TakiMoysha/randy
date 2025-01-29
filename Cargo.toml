@@ -8,7 +8,7 @@ homepage = "https://github.com/iphands/randy"
 repository = "https://github.com/iphands/randy"
 readme = "README.md"
 license = "GPL-3.0"
-exclude = [ "/assets/*", "/scripts/*" ]
+exclude = ["/assets/*", "/scripts/*"]
 
 [profile.dev]
 opt-level = "s"
@@ -25,11 +25,12 @@ overflow-checks = false
 runtime_bench = []
 timings = []
 packaged = []
-nvidia = [ "nvml-wrapper" ]
+nvidia = ["nvml-wrapper"]
 
 [dependencies]
 gtk = "0.18.2"
 glib = "0.20.7"
+serde = { version = "1.0.217", features = ["derive"] } # for toml
 serde_yml = "0.0.12"
 clap = { version = "4.5.27", features = ["derive"] }
 # update process ...
