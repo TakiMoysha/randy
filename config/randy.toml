@@ -1,0 +1,29 @@
+[settings]
+timeout = 1
+color_bar = "#fff"
+color_label = "#eee"
+color_text = "#fff"
+decoration = false
+resizable = false
+skip_taskbar = true
+color_background = "#000"
+font_size = "large"
+xpos = 3380
+ypos = 0
+
+
+[[ui]]
+type = "mem_consumers"
+text = "TOP MEMORY"
+limit = 5
+
+[[ui]]
+type = "cpu_consumers"
+
+[[ui.item]]
+func = "procs_count"
+text = "Running processes:"
+
+[[ui.item]]
+func = "load"
+text = "Load:"

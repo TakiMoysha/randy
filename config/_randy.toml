@@ -1,0 +1,69 @@
+# [[ui]]
+# text = "SYSTEM"
+# type = "system"
+#
+# [[ui.item]]
+# func = "hostname"
+# text = "Hostname:"
+#
+# [[ui.item]]
+# func = "kernel"
+# text = "Kernel:"
+#
+# [[ui.item]]
+# func = "uptime"
+# text = "Uptime:"
+#
+# [[ui.item]]
+# func = "cpu_speed_rpi"
+# text = "CPU speed:"
+#
+# [[ui.item]]
+# func = "cpu_temp_sys"
+# text = "CPU Temp:"
+#
+# [[ui.item]]
+# func = "cpu_voltage_rpi"
+# text = "CPU voltage:"
+#
+# [[ui.item]]
+# func = "cpu_usage"
+# text = "CPU usage:"
+# widget = "bar"
+#
+# [[ui.item]]
+# func = "ram_usage"
+# text = "RAM usage:"
+# widget = "bar"
+#
+# [[ui.item]]
+# func = "procs_count"
+# text = "Running processes:"
+#
+# [[ui.item]]
+# func = "load"
+# text = "Load:"
+#
+# [[ui]]
+# text = "CPUS"
+# type = "cpus"
+# func = "cpus"
+# # text = "CPU" # !TODO: dublicate key
+#
+# [[ui]]
+# text = "TOP CPU"
+# type = "cpu_consumers"
+# limit = 5
+#
+# [[ui]]
+# text = "TOP MEMORY"
+# type = "mem_consumers"
+# limit = 5
+#
+# [[ui]]
+# block = "FILESYSTEM"
+# type = "filesystem"
+#
+# [[ui.item]]
+# text = "root:"
+mount_point = "/"

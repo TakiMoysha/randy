@@ -5,7 +5,7 @@ extern crate lazy_static;
 extern crate gio;
 extern crate gtk;
 
-#[macro_use]
+// #[macro_use]
 // mod macros;
 // mod deets;
 // mod file_utils;

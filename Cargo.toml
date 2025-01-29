@@ -31,6 +31,7 @@ nvidia = ["nvml-wrapper"]
 gtk = "0.18.2"
 glib = "0.20.7"
 serde = { version = "1.0.217", features = ["derive"] } # for toml
+toml = "0.8.19"
 serde_yml = "0.0.12"
 clap = { version = "4.5.27", features = ["derive"] }
 # update process ...
