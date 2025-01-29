@@ -5,7 +5,6 @@ extern crate lazy_static;
 extern crate gio;
 extern crate gtk;
 
-use config::{load_config, load_default_config};
 #[macro_use]
 // mod macros;
 // mod deets;
@@ -72,6 +71,8 @@ use std::path::PathBuf;
 mod config;
 mod ui;
 
+use config::{find_default_config, load_config};
+
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 struct Args {
@@ -84,11 +85,9 @@ const APP_ID: &str = "org.ahands.randy";
 fn main() -> ExitCode {
     let args = Args::parse();
 
-    println!("Config: {:?}", args.config);
-
-    let config = match args.config.is_none() {
-        true => config::load_default_config(),
-        false => config::load_config(PathBuf::from(args.config.unwrap())),
+    let config = match args.config {
+        Some(v) => load_config(PathBuf::from(v)),
+        None => load_config(find_default_config()),
     };
 
     let app = gtk::Application::builder()
