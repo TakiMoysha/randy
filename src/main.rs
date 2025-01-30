@@ -15,6 +15,7 @@ struct TopRow {
     pct: gtk::Label,
 }
 
+use gio::Settings;
 use stubs::ConfigString;
 
 struct UiStash {
@@ -96,6 +97,7 @@ fn main() -> ExitCode {
     let clone_config = config.clone();
 
     let app = gtk::Application::builder().application_id(APP_ID).build();
+    // let settings = Settings::new(APP_ID).set_value("conf", &config);
     app.connect_startup(move |_| ui::css::load_css(&clone_config));
     app.connect_activate(move |app| ui::build_ui(app, &config));
     app.run_with_args(&Vec::<String>::new())

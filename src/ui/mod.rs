@@ -1,21 +1,9 @@
-use gtk::gdk::Screen;
+use gio::prelude::SettingsExtManual;
+use gio::{Settings, SettingsExt};
 use gtk::prelude::*;
 use gtk::{Application, ApplicationWindow};
 
 // mod _helpers;
-
-use crate::config;
-
-pub mod css {
-    use crate::config;
-
-    pub fn load_css(config: &config::Config) {
-        let conf_preset = &config.settings;
-        println!("{:?}", conf_preset);
-        let provider = gtk::CssProvider::new();
-        // provider.load_from_file();
-    }
-}
 
 mod _maybe {
     #[derive(Default)]
@@ -26,29 +14,55 @@ mod _maybe {
     impl UiBuilder {}
 }
 
+pub fn test_build_ui(app: &Application) {
+    let window = ApplicationWindow::builder()
+        .application(app)
+        .title("Randy")
+        .default_width(200)
+        .default_height(200)
+        .build();
+
+    window.present();
+}
+
+use crate::config;
+
+pub mod css {
+    use crate::config;
+
+    pub fn load_css(config: &config::Config) {
+        let conf_preset = &config.settings;
+        let provider = gtk::CssProvider::new();
+        // provider.load_from_file();
+        //
+        //     let screen = window.get_screen().unwrap();
+        //
+        //     let css: &str = &get_css(&config["settings"], screen.is_composited());
+        //     let provider = gtk::CssProvider::new();
+        //     provider
+        //         .load_from_data(css.as_bytes())
+        //         .expect("Failed to load CSS");
+        //     gtk::StyleContext::add_provider_for_screen(
+        //         &screen,
+        //         &provider,
+        //         gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+        //     );
+    }
+}
+
 pub fn build_ui(app: &gtk::Application, config: &config::Config) {
     let window = ApplicationWindow::builder()
         .application(app)
         .title("Randy")
         .default_width(200)
-        .default_height(200);
+        .default_height(200)
+        .build();
 
-    window.build().present();
+    window.present();
 }
 
 // ############## DEPRECATED
 //     let screen = window.get_screen().unwrap();
-//
-//     let css: &str = &get_css(&config["settings"], screen.is_composited());
-//     let provider = gtk::CssProvider::new();
-//     provider
-//         .load_from_data(css.as_bytes())
-//         .expect("Failed to load CSS");
-//     gtk::StyleContext::add_provider_for_screen(
-//         &screen,
-//         &provider,
-//         gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
-//     );
 //
 //     window.set_decorated(config["settings"]["decoration"].as_bool().unwrap_or(false));
 //     window.set_resizable(config["settings"]["resizable"].as_bool().unwrap_or(false));
