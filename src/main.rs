@@ -1,5 +1,5 @@
-use std::collections::HashMap;
 use std::time::Instant;
+use std::{collections::HashMap, rc::Rc};
 
 const SPACING: i32 = 3;
 
@@ -66,19 +66,37 @@ struct Cli {
 
 const APP_ID: &str = "org.ahands.randy";
 
+mod app {
+    use crate::config;
+
+    // glib::wrapper! {
+    //     struct RandyApp(ObjectSubclass<impl::RandyAppImpl>)
+    //         @extends gio::Application, gtk::Application,
+    //         @implements gio::ApplicationGroup, gio::ActionMap, gtk::Root;
+    // }
+
+    // impl RandyApp {}
+
+    // impl RandyApp {
+    //     pub fn new(config: config::Config) -> RandyApp {
+    //         RandyApp {
+    //             config: Box::new(config),
+    //         }
+    //     }
+    // }
+}
+
 fn main() -> ExitCode {
     let args = Cli::parse();
 
-    let config = match args.config {
+    let config = Rc::new(match args.config {
         Some(config_path) => load_config(PathBuf::from(config_path)),
         None => load_config(find_default_config()),
-    };
+    });
+    let clone_config = config.clone();
 
     let app = gtk::Application::builder().application_id(APP_ID).build();
-
-    app.connect_activate(move |app| {
-        ui::build_ui(app, &config);
-    });
-
+    app.connect_startup(move |_| ui::css::load_css(&clone_config));
+    app.connect_activate(move |app| ui::build_ui(app, &config));
     app.run_with_args(&Vec::<String>::new())
 }

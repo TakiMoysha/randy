@@ -6,17 +6,28 @@ use gtk::{Application, ApplicationWindow};
 
 use crate::config;
 
-mod css {
+pub mod css {
     use crate::config;
 
-    pub fn load_css(config: &config::Config) {}
+    pub fn load_css(config: &config::Config) {
+        let conf_preset = &config.settings;
+        println!("{:?}", conf_preset);
+        let provider = gtk::CssProvider::new();
+        // provider.load_from_file();
+    }
+}
+
+mod _maybe {
+    #[derive(Default)]
+    pub struct UiBuilder {
+        // config: config::Config,
+    }
+
+    impl UiBuilder {}
 }
 
 pub fn build_ui(app: &gtk::Application, config: &config::Config) {
     let window = gtk::ApplicationWindow::builder().application(app);
-    let style = css::load_css(&config);
-
-    let cssProvider = gtk::CssProvider::new();
 
     // let window = ApplicationWindow::builder()
     //     .application(app)
@@ -25,7 +36,7 @@ pub fn build_ui(app: &gtk::Application, config: &config::Config) {
     //     .title("Randy")
     //     .build();
 
-    window.show_menubar(true);
+    window.build().present();
 }
 
 //     let screen = window.get_screen().unwrap();

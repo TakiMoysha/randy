@@ -46,12 +46,12 @@ pub fn find_default_config() -> PathBuf {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Config {
-    settings: Settings,
-    ui: Option<Vec<Ui>>,
+    pub settings: Settings,
+    pub ui: Option<Vec<Ui>>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-struct Settings {
+pub struct Settings {
     timeout: Option<u8>,
     color_bar: Option<String>,
     color_label: Option<String>,
@@ -66,7 +66,7 @@ struct Settings {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-struct Ui {
+pub struct Ui {
     r#type: String,
     text: Option<String>,
     limit: Option<u8>,
@@ -74,7 +74,7 @@ struct Ui {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-struct UiItem {
+pub struct UiItem {
     func: Option<String>,
     text: Option<String>,
 }
