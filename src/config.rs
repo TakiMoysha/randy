@@ -68,14 +68,9 @@ pub struct Settings {
     pub decoration: bool,
     #[serde(default = "default_as_false")]
     pub resizable: bool,
-    #[serde(default = "default_as_true")]
-    pub skip_taskbar: bool,
     color_background: Option<String>,
     font_size: Option<String>,
-    #[serde(default)] // depreated for gtk-4, wayland
-    pub xpos: i32,
-    #[serde(default)] // depreated for gtk-4, wayland
-    pub ypos: i32,
+    // depreated for gtk-4, wayland
 }
 
 impl Default for Settings {
@@ -87,7 +82,6 @@ impl Default for Settings {
             color_text: None,
             decoration: false,
             resizable: false,
-            skip_taskbar: true,
             color_background: None,
             font_size: None,
             ..Default::default()
@@ -104,6 +98,7 @@ pub struct Ui {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+// pub struct Widget {
 pub struct UiItem {
     func: Option<String>,
     text: Option<String>,

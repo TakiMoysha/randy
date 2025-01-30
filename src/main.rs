@@ -1,8 +1,6 @@
 // use std::time::Instant;
 // use std::{collections::HashMap, rc::Rc};
 
-// const SPACING: i32 = 3;
-
 // struct Cpu {
 //     mhz: gtk4::Label,
 //     progress: gtk4::ProgressBar,
@@ -13,19 +11,6 @@
 //     name: gtk4::Label,
 //     pid: gtk4::Label,
 //     pct: gtk4::Label,
-// }
-
-// use gio::Settings;
-// use stubs::ConfigString;
-
-// struct UiStash {
-//     batts: HashMap<String, Battery>,
-//     cpus: Vec<Cpu>,
-//     fs: HashMap<String, (gtk::Label, gtk::ProgressBar)>,
-//     net: HashMap<String, (gtk::Label, gtk::Label)>,
-//     system: HashMap<ConfigString, (gtk::Label, Option<gtk::ProgressBar>)>,
-//     top_mems: Vec<TopRow>,
-//     top_cpus: Vec<TopRow>,
 // }
 
 // struct Battery {
@@ -41,12 +26,7 @@
 //     last_instant: Instant,
 // }
 
-// lazy_static! {
-//     static ref FRAME_COUNT: Mutex<u64> = Mutex::new(0);
-// }
-
 use clap::{command, Parser};
-use gio::prelude::*;
 use gtk4::{
     glib::ExitCode,
     prelude::{ApplicationExt, ApplicationExtManual},
@@ -99,7 +79,7 @@ fn main() -> ExitCode {
 
     let app = gtk4::Application::builder().application_id(APP_ID).build();
     // let settings = Settings::new(APP_ID).set_value("conf", &config);
-    // app.connect_startup(move |_| ui::css::load_css(&clone_config));
+    app.connect_startup(move |_| ui::css::load_css(&clone_config));
     app.connect_activate(move |app| ui::build_ui(app, &config));
     app.run_with_args(&Vec::<String>::new())
 }

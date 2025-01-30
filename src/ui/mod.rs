@@ -1,4 +1,5 @@
-use gio::prelude::*;
+use std::collections::HashMap;
+
 use gtk4::prelude::*;
 use gtk4::{Application, ApplicationWindow};
 
@@ -36,10 +37,18 @@ use crate::config;
 
 pub mod css {
     use crate::config;
+    use gtk4::gdk;
 
     pub fn load_css(config: &config::Config) {
-        let conf_preset = &config.settings;
         let provider = gtk4::CssProvider::new();
+        provider.load_from_resource("../styles/style.css");
+        if let Some(display) = gdk::Display::default() {
+            gtk4::style_context_add_provider_for_display(
+                &display,
+                &provider,
+                gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION,
+            );
+        }
 
         // provider.load_from_file();
         //
@@ -58,6 +67,20 @@ pub mod css {
     }
 }
 
+mod widgets {
+    use std::collections::HashMap;
+}
+
+pub struct UiStash {
+    // batts: HashMap<String, Battery>,
+    // cpus: Vec<Cpu>,
+    fs: HashMap<String, (gtk4::Label, gtk4::ProgressBar)>,
+    net: HashMap<String, (gtk4::Label, gtk4::Label)>,
+    // system: HashMap<ConfigString, (gtk::Label, Option<gtk::ProgressBar>)>,
+    // top_mems: Vec<TopRow>,
+    // top_cpus: Vec<TopRow>,
+}
+
 pub fn build_ui(app: &gtk4::Application, config: &config::Config) {
     let window = ApplicationWindow::builder()
         .application(app)
@@ -68,34 +91,30 @@ pub fn build_ui(app: &gtk4::Application, config: &config::Config) {
     window.set_resizable(config.settings.resizable);
     window.set_default_size(375, -1);
 
-    println!("Debug {:?}", helpers::is_interactive(&config));
+    println!("Debug {:?}", helpers::is_interactive(config));
     println!("Debug {:#?}", &config.settings);
 
-    // window.realize();
     // ===================================
+
+    let layout = gtk4::Box::new(gtk4::Orientation::Vertical, 10);
+    layout.set_css_classes(&["conainer"]);
+
+    let mut stash = UiStash {
+        // batts: HashMap::new(),
+        // system: HashMap::new(),
+        // cpus: Vec::new(),
+        net: HashMap::new(),
+        // top_mems: Vec::new(),
+        // top_cpus: Vec::new(),
+        fs: HashMap::new(),
+    };
+
+    // ==================================
+    // init_ui(&mut stash, &vbox, &config.ui);
+    // window.add(&vbox);
+    // window.show_all();
+    // update_ui(&config.settings, stash);
 
     // ===================================
     window.present();
 }
-
-// ############## DEPRECATED
-
-//
-//     let vbox = gtk::Box::new(gtk::Orientation::Vertical, SPACING);
-//     vbox.get_style_context().add_class("container");
-//
-//     let mut stash = UiStash {
-//         batts: HashMap::new(),
-//         system: HashMap::new(),
-//         cpus: Vec::new(),
-//         net: HashMap::new(),
-//         top_mems: Vec::new(),
-//         top_cpus: Vec::new(),
-//         fs: HashMap::new(),
-//     };
-//
-//     init_ui(&mut stash, &vbox, &config["ui"]);
-//     window.add(&vbox);
-//     window.show_all();
-//     update_ui(&config["settings"], stash);
-// }
