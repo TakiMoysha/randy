@@ -1,18 +1,4 @@
-mod stubs;
-
-#[macro_use]
-extern crate lazy_static;
-extern crate gio;
-extern crate gtk;
-
-// #[macro_use]
-// mod macros;
-// mod deets;
-// mod file_utils;
-use gio::prelude::*;
-
 use std::collections::HashMap;
-use std::sync::Mutex;
 use std::time::Instant;
 
 const SPACING: i32 = 3;
@@ -54,13 +40,10 @@ struct NetDevCache {
     last_instant: Instant,
 }
 
-lazy_static! {
-    static ref FRAME_COUNT: Mutex<u64> = Mutex::new(0);
-}
+// lazy_static! {
+//     static ref FRAME_COUNT: Mutex<u64> = Mutex::new(0);
+// }
 
-// mod css;
-
-// mod _helpers;
 use clap::{command, Parser};
 use gtk::{
     glib::ExitCode,
@@ -69,13 +52,14 @@ use gtk::{
 use std::path::PathBuf;
 
 mod config;
+mod stubs;
 mod ui;
 
 use config::{find_default_config, load_config};
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
-struct Args {
+struct Cli {
     #[arg(short, long)]
     config: Option<String>,
 }
@@ -83,22 +67,18 @@ struct Args {
 const APP_ID: &str = "org.ahands.randy";
 
 fn main() -> ExitCode {
-    let args = Args::parse();
+    let args = Cli::parse();
 
     let config = match args.config {
-        Some(v) => load_config(PathBuf::from(v)),
+        Some(config_path) => load_config(PathBuf::from(config_path)),
         None => load_config(find_default_config()),
     };
 
-    let app = gtk::Application::builder()
-        .application_id(APP_ID)
-        .flags(Default::default())
-        .build();
+    let app = gtk::Application::builder().application_id(APP_ID).build();
 
-    app.connect_activate(ui::build_ui);
-    // application.connect_activate(|app| {
-    //     build_ui(app, config::get_config(&args.config));
-    // });
+    app.connect_activate(move |app| {
+        ui::build_ui(app, &config);
+    });
 
-    app.run()
+    app.run_with_args(&Vec::<String>::new())
 }

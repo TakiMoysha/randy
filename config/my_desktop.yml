@@ -84,7 +84,7 @@ ui:
   - text: CPUS
     type: cpus
     func: cpus
-    text: "CPU"
+    # text: "CPU"
     split: true
 
   - text: TOP CPU

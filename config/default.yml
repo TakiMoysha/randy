@@ -80,7 +80,7 @@ ui:
   - text: CPUS
     type: cpus
     func: cpus
-    text: "CPU"
+    # text: "CPU" 
 
   - text: TOP CPU
     type: cpu_consumers

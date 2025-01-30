@@ -1,8 +1,8 @@
 [package]
 name = "randy"
-version = "1.6.10"
+version = "1.7.0"
 authors = ["Ian Page Hands <iphands@gmail.com>"]
-edition = "2018"
+edition = "2021"
 description = "Conky like app in Rust"
 homepage = "https://github.com/iphands/randy"
 repository = "https://github.com/iphands/randy"
@@ -34,9 +34,12 @@ serde = { version = "1.0.217", features = ["derive"] } # for toml
 toml = "0.8.19"
 serde_yml = "0.0.12"
 clap = { version = "4.5.27", features = ["derive"] }
+libc = "0.2.*"
 # update process ...
 gio = "0.9"
-libc = "0.2"
 lazy_static = "1.4"
 sensors = { version = "0.2", optional = true }
 nvml-wrapper = { version = "0.6", optional = true }
+
+[dev-dependencies]
+rstest = "0.24.0"

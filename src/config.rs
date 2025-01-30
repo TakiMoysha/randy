@@ -6,11 +6,9 @@ use std::{
 
 use serde::{Deserialize, Serialize};
 
-// const SUPPORTED_FORMATS: [&str; 1] = ["yml"];
-const SUPPORTED_FORMATS: [&str; 1] = ["toml"];
-// const SUPPORTED_FORMATS: [&str; 2] = ["yml", "toml"];
+const SUPPORTED_FORMATS: [&str; 2] = ["yml", "toml"];
 const DEFAULT_NAME: [&str; 2] = ["randy", ".randy"];
-const DEFAULT_PATHS: [&str; 3] = ["XDG_CONFIG_HOME", "HOME", "/etc/"];
+const DEFAULT_PATHS: [&str; 3] = ["XDG_CONFIG_HOME", "HOME", "/etc"];
 
 fn build_full_paths() -> Vec<PathBuf> {
     let mut paths = Vec::new();
@@ -39,8 +37,8 @@ pub fn find_default_config() -> PathBuf {
 
     path.unwrap_or_else(|| {
         eprintln!("Could not find a randy.yml config file.\n Checked:");
-        eprintln!("{:?}", paths);
-        eprintln!("Please put a randy.yml config file in one of those places.");
+        paths.iter().for_each(|f| eprintln!("\t - {}", f.display()));
+        eprintln!("Please put a randy.yml config file in one of those places or use --config.");
         eprintln!("Exmples: https://github.com/iphands/randy/tree/main/config");
         std::process::exit(1);
     })
@@ -77,29 +75,27 @@ struct Ui {
 
 #[derive(Debug, Serialize, Deserialize)]
 struct UiItem {
-    func: String,
-    text: String,
+    func: Option<String>,
+    text: Option<String>,
 }
 
 pub fn load_config(path: PathBuf) -> Config {
     println!("Using config file: {}", path.display());
     let mut reader = BufReader::new(File::open(&path).expect("Unable to open config file"));
 
-    let config = match path.extension().and_then(|s| s.to_str()) {
-        Some("yaml") => {
+    match path.extension().and_then(|s| s.to_str()) {
+        Some("yml") => {
             let mut buf = String::new();
             reader.read_to_string(&mut buf).unwrap();
-            todo!("implement yaml");
+            serde_yml::from_str(&buf).unwrap()
         }
         Some("toml") => {
             let mut buf = String::new();
             reader.read_to_string(&mut buf).unwrap();
-            let config: Config = toml::from_str(&buf).unwrap();
-            config
+            toml::from_str(&buf).unwrap()
         }
-        _ => panic!("Unknown config format"),
-    };
-    config
+        _ => panic!("Unknown config format: {:?}", path.extension()),
+    }
 }
 
 #[cfg(test)]
@@ -121,17 +117,20 @@ mod tests {
     }
 
     #[test]
-    fn should_return_default_config() {
+    fn should_return_default_yaml_config() {
         let path = load_test_config_from_env();
-        println!("{:?}", path);
+        assert!(path.extension().unwrap() == "yml", "Bad format: {:?}", path);
         assert!(path.exists(), "Can't find default config, it exists?");
     }
+
+    #[ignore = "how set default extension config?"]
+    #[test]
+    fn should_return_default_toml_config() {}
 
     #[test]
     fn should_parse_config() {
         let path = load_test_config_from_env();
         let config = load_config(path);
-        println!("{:#?}", config);
-        // assert!(!config.is_empty());
+        // assert!(config);
     }
 }
