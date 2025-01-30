@@ -102,22 +102,11 @@ pub fn load_config(path: PathBuf) -> Config {
     config
 }
 
-// ###
-fn get_file() -> String {
-    // let config_path = try_get_file().expect("!!!!");
-    // println!("Using config file: {}", config_path);
-    // return match fs::read_to_string(&config_path) {
-    //     Ok(s) => s,
-    //     Err(_) => panic!("Unable to open/read {}", config_path),
-    // };
-    String::new()
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
 
-    fn load_test_config() -> PathBuf {
+    fn load_test_config_from_env() -> PathBuf {
         std::env::set_var(
             "XDG_CONFIG_HOME",
             std::env::current_dir().unwrap().join("config"),
@@ -133,14 +122,14 @@ mod tests {
 
     #[test]
     fn should_return_default_config() {
-        let path = load_test_config();
+        let path = load_test_config_from_env();
         println!("{:?}", path);
         assert!(path.exists(), "Can't find default config, it exists?");
     }
 
     #[test]
     fn should_parse_config() {
-        let path = load_test_config();
+        let path = load_test_config_from_env();
         let config = load_config(path);
         println!("{:#?}", config);
         // assert!(!config.is_empty());
