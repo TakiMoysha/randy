@@ -46,32 +46,8 @@ pub fn find_default_config() -> PathBuf {
     })
 }
 
-pub fn load_config(path: PathBuf) {
-    println!("Using config file: {}", path.display());
-    let config = parse_config(path);
-    println!("Config: {:#?}", config);
-}
-
-fn parse_config(path: PathBuf) -> Config {
-    let file = File::open(&path).expect("Unable to open config file");
-    let mut reader = BufReader::new(file);
-    let extension = path.extension().unwrap().to_str().unwrap();
-    if extension.eq("toml") {
-        let mut buffer = String::new();
-        reader
-            .read_to_string(&mut buffer)
-            .expect("Unable to parse config file");
-        toml::from_str(&buffer).expect("Unable to parse config file")
-    } else if extension.eq("yml") {
-        // serde_yml::from_reader(reader).expect("Unable to parse config file");
-        todo!("!!!!! YAML YET NOT IMPLEMENTED !!!!");
-    } else {
-        panic!("Unknown config format")
-    }
-}
-
 #[derive(Debug, Serialize, Deserialize)]
-struct Config {
+pub struct Config {
     settings: Settings,
     ui: Option<Vec<Ui>>,
 }
@@ -103,6 +79,27 @@ struct Ui {
 struct UiItem {
     func: String,
     text: String,
+}
+
+pub fn load_config(path: PathBuf) -> Config {
+    println!("Using config file: {}", path.display());
+    let mut reader = BufReader::new(File::open(&path).expect("Unable to open config file"));
+
+    let config = match path.extension().and_then(|s| s.to_str()) {
+        Some("yaml") => {
+            let mut buf = String::new();
+            reader.read_to_string(&mut buf).unwrap();
+            todo!("implement yaml");
+        }
+        Some("toml") => {
+            let mut buf = String::new();
+            reader.read_to_string(&mut buf).unwrap();
+            let config: Config = toml::from_str(&buf).unwrap();
+            config
+        }
+        _ => panic!("Unknown config format"),
+    };
+    config
 }
 
 // ###
@@ -144,7 +141,7 @@ mod tests {
     #[test]
     fn should_parse_config() {
         let path = load_test_config();
-        let config = parse_config(path);
+        let config = load_config(path);
         println!("{:#?}", config);
         // assert!(!config.is_empty());
     }
