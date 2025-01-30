@@ -47,6 +47,9 @@ pub fn find_default_config() -> PathBuf {
 fn default_as_false() -> bool {
     false
 }
+fn default_as_true() -> bool {
+    false
+}
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Config {
@@ -62,14 +65,17 @@ pub struct Settings {
     color_label: Option<String>,
     color_text: Option<String>,
     #[serde(default = "default_as_false")]
-    decoration: bool,
+    pub decoration: bool,
     #[serde(default = "default_as_false")]
-    resizable: bool,
-    skip_taskbar: Option<bool>,
+    pub resizable: bool,
+    #[serde(default = "default_as_true")]
+    pub skip_taskbar: bool,
     color_background: Option<String>,
     font_size: Option<String>,
-    xpos: Option<u16>,
-    ypos: Option<u16>,
+    #[serde(default)] // depreated for gtk-4, wayland
+    pub xpos: i32,
+    #[serde(default)] // depreated for gtk-4, wayland
+    pub ypos: i32,
 }
 
 impl Default for Settings {
@@ -81,11 +87,10 @@ impl Default for Settings {
             color_text: None,
             decoration: false,
             resizable: false,
-            skip_taskbar: None,
+            skip_taskbar: true,
             color_background: None,
             font_size: None,
-            xpos: None,
-            ypos: None,
+            ..Default::default()
         }
     }
 }

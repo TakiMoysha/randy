@@ -1,4 +1,6 @@
-# Randy
+# Randy-4
+> Planned as an update to the original Randy, but due to migration on the GTK-4, I had to rewrite everything and make some changes
+
 Conky inspired system info viewer written in Rust / GTK3
 
 ## Cheezeburgerz!

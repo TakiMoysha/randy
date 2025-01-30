@@ -28,18 +28,18 @@ packaged = []
 nvidia = ["nvml-wrapper"]
 
 [dependencies]
-gtk = "0.18.2"
+gtk4 = "0.9.5"
+gio = "0.20.7"
 glib = "0.20.7"
-serde = { version = "1.0.217", features = ["derive"] } # for toml
+libc = "0.2.169"
 toml = "0.8.19"
+serde = { version = "1.0.217", features = ["derive"] }
 serde_yml = "0.0.12"
 clap = { version = "4.5.27", features = ["derive"] }
-libc = "0.2.*"
 # update process ...
-gio = "0.9"
 lazy_static = "1.4"
 sensors = { version = "0.2", optional = true }
-nvml-wrapper = { version = "0.6", optional = true }
+nvml-wrapper = { version = "0.10.0", optional = true }
 
 [dev-dependencies]
 rstest = "0.24.0"

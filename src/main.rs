@@ -1,56 +1,57 @@
-use std::time::Instant;
-use std::{collections::HashMap, rc::Rc};
+// use std::time::Instant;
+// use std::{collections::HashMap, rc::Rc};
 
-const SPACING: i32 = 3;
+// const SPACING: i32 = 3;
 
-struct Cpu {
-    mhz: gtk::Label,
-    progress: gtk::ProgressBar,
-    pct_label: gtk::Label,
-}
+// struct Cpu {
+//     mhz: gtk4::Label,
+//     progress: gtk4::ProgressBar,
+//     pct_label: gtk4::Label,
+// }
 
-struct TopRow {
-    name: gtk::Label,
-    pid: gtk::Label,
-    pct: gtk::Label,
-}
+// struct TopRow {
+//     name: gtk4::Label,
+//     pid: gtk4::Label,
+//     pct: gtk4::Label,
+// }
 
-use gio::Settings;
-use stubs::ConfigString;
+// use gio::Settings;
+// use stubs::ConfigString;
 
-struct UiStash {
-    batts: HashMap<String, Battery>,
-    cpus: Vec<Cpu>,
-    fs: HashMap<String, (gtk::Label, gtk::ProgressBar)>,
-    net: HashMap<String, (gtk::Label, gtk::Label)>,
-    system: HashMap<ConfigString, (gtk::Label, Option<gtk::ProgressBar>)>,
-    top_mems: Vec<TopRow>,
-    top_cpus: Vec<TopRow>,
-}
+// struct UiStash {
+//     batts: HashMap<String, Battery>,
+//     cpus: Vec<Cpu>,
+//     fs: HashMap<String, (gtk::Label, gtk::ProgressBar)>,
+//     net: HashMap<String, (gtk::Label, gtk::Label)>,
+//     system: HashMap<ConfigString, (gtk::Label, Option<gtk::ProgressBar>)>,
+//     top_mems: Vec<TopRow>,
+//     top_cpus: Vec<TopRow>,
+// }
 
-struct Battery {
-    lbl_pct: gtk::Label,
-    lbl_status: gtk::Label,
-    str_battery: String,
-    str_plugged: String,
-    str_pct_template: String,
-}
+// struct Battery {
+//     lbl_pct: gtk::Label,
+//     lbl_status: gtk::Label,
+//     str_battery: String,
+//     str_plugged: String,
+//     str_pct_template: String,
+// }
 
-struct NetDevCache {
-    last_bytes: u64,
-    last_instant: Instant,
-}
+// struct NetDevCache {
+//     last_bytes: u64,
+//     last_instant: Instant,
+// }
 
 // lazy_static! {
 //     static ref FRAME_COUNT: Mutex<u64> = Mutex::new(0);
 // }
 
 use clap::{command, Parser};
-use gtk::{
+use gio::prelude::*;
+use gtk4::{
     glib::ExitCode,
     prelude::{ApplicationExt, ApplicationExtManual},
 };
-use std::path::PathBuf;
+use std::{path::PathBuf, rc::Rc};
 
 mod config;
 mod stubs;
@@ -96,9 +97,9 @@ fn main() -> ExitCode {
     });
     let clone_config = config.clone();
 
-    let app = gtk::Application::builder().application_id(APP_ID).build();
+    let app = gtk4::Application::builder().application_id(APP_ID).build();
     // let settings = Settings::new(APP_ID).set_value("conf", &config);
-    app.connect_startup(move |_| ui::css::load_css(&clone_config));
+    // app.connect_startup(move |_| ui::css::load_css(&clone_config));
     app.connect_activate(move |app| ui::build_ui(app, &config));
     app.run_with_args(&Vec::<String>::new())
 }

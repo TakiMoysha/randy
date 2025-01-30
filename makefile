@@ -8,5 +8,6 @@ cliff:
 
 # References:
 # https://gtk-rs.org/gtk4-rs/stable/latest/book/hello_world.html
+# gtk4 not support move function (btw wayland)
 
 

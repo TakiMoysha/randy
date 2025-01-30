@@ -8,8 +8,8 @@ resizable = false
 skip_taskbar = true
 color_background = "#000"
 font_size = "large"
-xpos = 3380
-ypos = 0
+xpos = 100
+ypos = 100
 
 
 [[ui]]

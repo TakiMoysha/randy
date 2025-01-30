@@ -1,7 +1,6 @@
-use gio::prelude::SettingsExtManual;
-use gio::{Settings, SettingsExt};
-use gtk::prelude::*;
-use gtk::{Application, ApplicationWindow};
+use gio::prelude::*;
+use gtk4::prelude::*;
+use gtk4::{Application, ApplicationWindow};
 
 // mod _helpers;
 
@@ -12,6 +11,14 @@ mod _maybe {
     }
 
     impl UiBuilder {}
+}
+
+mod helpers {
+    use crate::config;
+
+    pub fn is_interactive(config: &config::Config) -> bool {
+        config.settings.decoration || config.settings.resizable
+    }
 }
 
 pub fn test_build_ui(app: &Application) {
@@ -32,7 +39,8 @@ pub mod css {
 
     pub fn load_css(config: &config::Config) {
         let conf_preset = &config.settings;
-        let provider = gtk::CssProvider::new();
+        let provider = gtk4::CssProvider::new();
+
         // provider.load_from_file();
         //
         //     let screen = window.get_screen().unwrap();
@@ -50,42 +58,28 @@ pub mod css {
     }
 }
 
-pub fn build_ui(app: &gtk::Application, config: &config::Config) {
+pub fn build_ui(app: &gtk4::Application, config: &config::Config) {
     let window = ApplicationWindow::builder()
         .application(app)
         .title("Randy")
-        .default_width(200)
-        .default_height(200)
         .build();
 
+    window.set_decorated(config.settings.decoration);
+    window.set_resizable(config.settings.resizable);
+    window.set_default_size(375, -1);
+
+    println!("Debug {:?}", helpers::is_interactive(&config));
+    println!("Debug {:#?}", &config.settings);
+
+    // window.realize();
+    // ===================================
+
+    // ===================================
     window.present();
 }
 
 // ############## DEPRECATED
-//     let screen = window.get_screen().unwrap();
-//
-//     window.set_decorated(config["settings"]["decoration"].as_bool().unwrap_or(false));
-//     window.set_resizable(config["settings"]["resizable"].as_bool().unwrap_or(false));
-//     window.set_position(gtk::WindowPosition::Center);
-//     window.set_default_size(375, -1);
-//     window.set_skip_taskbar_hint(config["settings"]["skip_taskbar"].as_bool().unwrap_or(true));
-//     window.set_keep_below(!_is_interactive(&config["settings"]));
-//     window.set_accept_focus(_is_interactive(&config["settings"]));
-//     // println!("Debug {:?}", _is_interactive(&config["settings"]));
-//     // println!("Debug {:?}", &config["settings"]);
-//
-//     window.realize();
-//
-//     let screen = window.get_screen().unwrap();
-//     let visual = screen.get_rgba_visual().unwrap();
-//     window.set_visual(Some(&visual));
-//
-//     if !config["settings"]["xpos"].is_badvalue() && !config["settings"]["ypos"].is_badvalue() {
-//         window.move_(
-//             config["settings"]["xpos"].as_i64().unwrap() as i32,
-//             config["settings"]["ypos"].as_i64().unwrap() as i32,
-//         );
-//     }
+
 //
 //     let vbox = gtk::Box::new(gtk::Orientation::Vertical, SPACING);
 //     vbox.get_style_context().add_class("container");
