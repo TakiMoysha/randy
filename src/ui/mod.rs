@@ -27,18 +27,16 @@ mod _maybe {
 }
 
 pub fn build_ui(app: &gtk::Application, config: &config::Config) {
-    let window = gtk::ApplicationWindow::builder().application(app);
-
-    // let window = ApplicationWindow::builder()
-    //     .application(app)
-    //     .default_width(200)
-    //     .default_height(200)
-    //     .title("Randy")
-    //     .build();
+    let window = ApplicationWindow::builder()
+        .application(app)
+        .title("Randy")
+        .default_width(200)
+        .default_height(200);
 
     window.build().present();
 }
 
+// ############## DEPRECATED
 //     let screen = window.get_screen().unwrap();
 //
 //     let css: &str = &get_css(&config["settings"], screen.is_composited());
@@ -52,7 +50,6 @@ pub fn build_ui(app: &gtk::Application, config: &config::Config) {
 //         gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
 //     );
 //
-//     window.set_title("Randy");
 //     window.set_decorated(config["settings"]["decoration"].as_bool().unwrap_or(false));
 //     window.set_resizable(config["settings"]["resizable"].as_bool().unwrap_or(false));
 //     window.set_position(gtk::WindowPosition::Center);

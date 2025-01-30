@@ -44,8 +44,13 @@ pub fn find_default_config() -> PathBuf {
     })
 }
 
+fn default_as_false() -> bool {
+    false
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Config {
+    #[serde(default)]
     pub settings: Settings,
     pub ui: Option<Vec<Ui>>,
 }
@@ -56,13 +61,33 @@ pub struct Settings {
     color_bar: Option<String>,
     color_label: Option<String>,
     color_text: Option<String>,
-    decoration: Option<bool>,
-    resizable: Option<bool>,
+    #[serde(default = "default_as_false")]
+    decoration: bool,
+    #[serde(default = "default_as_false")]
+    resizable: bool,
     skip_taskbar: Option<bool>,
     color_background: Option<String>,
     font_size: Option<String>,
     xpos: Option<u16>,
     ypos: Option<u16>,
+}
+
+impl Default for Settings {
+    fn default() -> Self {
+        Self {
+            timeout: None,
+            color_bar: None,
+            color_label: None,
+            color_text: None,
+            decoration: false,
+            resizable: false,
+            skip_taskbar: None,
+            color_background: None,
+            font_size: None,
+            xpos: None,
+            ypos: None,
+        }
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -131,6 +156,7 @@ mod tests {
     fn should_parse_config() {
         let path = load_test_config_from_env();
         let config = load_config(path);
+        println!("{:#?}", config);
         // assert!(config);
     }
 }
