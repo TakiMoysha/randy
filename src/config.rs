@@ -44,49 +44,60 @@ pub fn find_default_config() -> PathBuf {
     })
 }
 
-fn default_as_false() -> bool {
-    false
-}
-fn default_as_true() -> bool {
-    false
-}
-
+// defaults
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Config {
-    #[serde(default)]
     pub settings: Settings,
     pub ui: Option<Vec<Ui>>,
 }
 
+fn default_as_false() -> bool { false }
+fn default_as_true() -> bool { true }
+fn default_text_size() -> String { String::from("large") }
+fn default_text_font_family() -> String { String::from("monospace") }
+fn default_base_opacity() -> f64 { 1.0_f64 }
+fn default_bar_height() -> String { String::from("10px") }
+fn default_color_text() -> String { String::from("#e1eeeb") }
+fn default_color_bar() -> String { String::from("#e1eeff") }
+fn default_color_bar_high() -> String { String::from("#ffaaaa") }
+fn default_color_bar_med() -> String { String::from("#ffeeaa") }
+fn default_color_borders() -> String { String::from("#e1eeeb") }
+fn default_color_label() -> String { String::from("#87d7ff") }
+fn default_color_background() -> String { String::from("rgba(0, 0, 0, 0.5)") }
+fn default_color_trough() -> String { String::from("rgba(0, 0, 0, 0)") }
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Settings {
     timeout: Option<u8>,
-    color_bar: Option<String>,
-    color_label: Option<String>,
-    color_text: Option<String>,
+    #[serde(default = "default_color_text")]
+    pub color_text: String,
+    #[serde(default = "default_color_bar")]
+    pub color_bar: String,
+    #[serde(default = "default_color_bar_med")]
+    pub color_bar_med: String,
+    #[serde(default = "default_color_bar_high")]
+    pub color_bar_high: String,
+    #[serde(default = "default_color_label")]
+    pub color_label: String,
+    #[serde(default = "default_color_background")]
+    pub color_bg: String,
+    #[serde(default = "default_color_borders")]
+    pub color_borders: String,
+    #[serde(default = "default_color_trough")]
+    pub color_trough: String,
     #[serde(default = "default_as_false")]
     pub decoration: bool,
     #[serde(default = "default_as_false")]
     pub resizable: bool,
-    color_background: Option<String>,
-    font_size: Option<String>,
+    #[serde(default = "default_text_size")]
+    pub font_size: String,
+    #[serde(default = "default_text_font_family")]
+    pub font_family: String,
+    #[serde(default = "default_base_opacity")]
+    pub base_opacity: f64,
+    #[serde(default = "default_bar_height")]
+    pub bar_height: String,
     // depreated for gtk-4, wayland
-}
-
-impl Default for Settings {
-    fn default() -> Self {
-        Self {
-            timeout: None,
-            color_bar: None,
-            color_label: None,
-            color_text: None,
-            decoration: false,
-            resizable: false,
-            color_background: None,
-            font_size: None,
-            ..Default::default()
-        }
-    }
 }
 
 #[derive(Debug, Serialize, Deserialize)]
