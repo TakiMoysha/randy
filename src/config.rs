@@ -51,20 +51,48 @@ pub struct Config {
     pub ui: Option<Vec<Ui>>,
 }
 
-fn default_as_false() -> bool { false }
-fn default_as_true() -> bool { true }
-fn default_text_size() -> String { String::from("large") }
-fn default_text_font_family() -> String { String::from("monospace") }
-fn default_base_opacity() -> f64 { 1.0_f64 }
-fn default_bar_height() -> String { String::from("10px") }
-fn default_color_text() -> String { String::from("#e1eeeb") }
-fn default_color_bar() -> String { String::from("#e1eeff") }
-fn default_color_bar_high() -> String { String::from("#ffaaaa") }
-fn default_color_bar_med() -> String { String::from("#ffeeaa") }
-fn default_color_borders() -> String { String::from("#e1eeeb") }
-fn default_color_label() -> String { String::from("#87d7ff") }
-fn default_color_background() -> String { String::from("rgba(0, 0, 0, 0.5)") }
-fn default_color_trough() -> String { String::from("rgba(0, 0, 0, 0)") }
+fn default_as_false() -> bool {
+    false
+}
+fn default_as_true() -> bool {
+    true
+}
+fn default_text_size() -> String {
+    String::from("large")
+}
+fn default_text_font_family() -> String {
+    String::from("monospace")
+}
+fn default_base_opacity() -> f64 {
+    1.0_f64
+}
+fn default_bar_height() -> String {
+    String::from("10px")
+}
+fn default_color_text() -> String {
+    String::from("#e1eeeb")
+}
+fn default_color_bar() -> String {
+    String::from("#e1eeff")
+}
+fn default_color_bar_high() -> String {
+    String::from("#ffaaaa")
+}
+fn default_color_bar_med() -> String {
+    String::from("#ffeeaa")
+}
+fn default_color_borders() -> String {
+    String::from("#e1eeeb")
+}
+fn default_color_label() -> String {
+    String::from("#87d7ff")
+}
+fn default_color_background() -> String {
+    String::from("rgba(0, 0, 0, 0.5)")
+}
+fn default_color_trough() -> String {
+    String::from("rgba(0, 0, 0, 0)")
+}
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Settings {
@@ -117,19 +145,11 @@ pub struct UiItem {
 
 pub fn load_config(path: PathBuf) -> Config {
     println!("Using config file: {}", path.display());
-    let mut reader = BufReader::new(File::open(&path).expect("Unable to open config file"));
+    let file = std::fs::read_to_string(&path).expect("Unable to read config file");
 
     match path.extension().and_then(|s| s.to_str()) {
-        Some("yml") => {
-            let mut buf = String::new();
-            reader.read_to_string(&mut buf).unwrap();
-            serde_yml::from_str(&buf).unwrap()
-        }
-        Some("toml") => {
-            let mut buf = String::new();
-            reader.read_to_string(&mut buf).unwrap();
-            toml::from_str(&buf).unwrap()
-        }
+        Some("yml") => serde_yml::from_str(&file).expect("Can't parse config file"),
+        Some("toml") => toml::from_str(&file).expect("Can't parse config file"),
         _ => panic!("Unknown config format: {:?}", path.extension()),
     }
 }

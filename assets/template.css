@@ -1,81 +1,108 @@
+:root {
+  font-family: "monospace";
+  font-size: 10pt;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: "#4c4c4c";
+  --opacity: 1;
+  --bar-height: 10px;
+  --font-size: 10pt;
+  --color_background: "#f2f1f0";
+  --color_foreground: "#4c4c4c";
+  --color_border: "#e1eeeb";
+  --color_label: "#87d7ff";
+  --color_bar: "#e1eeff";
+  --color_bar_high: "#ffaaaa";
+  --color_bar_med: "#ffeeaa";
+  --color_trough: "rgba(0, 0, 0, 0)";
+}
+/* @define-color bg-color $color_background; */
+/* @define-color fg-color $color_foreground; */
+/* @define-color color_borders $color_border; */
+/* @define-color color_label $color_label; */
+/* @define-color color_bar $color_bar; */
+/* @define-color color_bar_high $color_bar_high; */
+/* @define-color color_bar_med $color_bar_med; */
+/* @define-color color_trough $color_trough; */
+
 window {
-    background-color: { color_background };
-    color: { color };
-    opacity: { base_opacity };
-    font-family: { font_family };
-    font-size: { font_size };
+  background-color: #f2f1f0;
+  color: #4c4c4c;
+  opacity: var(--opacity);
+  /* font-family: var(font-family); */
+  /* font-size: var(font-size); */
 }
 
 .container {
-    padding: 10px;
+  padding: 10px;
 }
 
 .frame {
-    border: none;
-    padding-bottom: 0.25em;
-    padding-left: 0.25em;
-    padding-right: 0.25em;
+  border: none;
+  padding-bottom: 0.25em;
+  padding-left: 0.25em;
+  padding-right: 0.25em;
 }
 
 * {
-    border-color: { color_borders };
+  border-color: "#e1eeeb";
 }
 
 .innerbox {
-    padding-bottom: 0.25em;
+  padding-bottom: 0.25em;
 }
 
 label.val {
-    font-weight: bolder;
-    padding-right: 0.5em;
+  font-weight: bolder;
+  padding-right: 0.5em;
 }
 
 label.key {
-    color: { color_label };
-    padding-left: 0.5em;
+  color: "#87d7ff";
+  padding-left: 0.5em;
 }
 
 progressbar {
-    padding-left:   0.5em;
-    padding-right:  0.5em;
-    padding-bottom: 3px;
-    padding-top:    0px;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-bottom: 3px;
+  padding-top: 0px;
 }
 
 frame label {
-    padding-right: 0.5em;
-    padding-left:  0.5em;
+  padding-right: 0.5em;
+  padding-left: 0.5em;
 }
 
 trough {
-    background-color: { color_trough };
-    min-height: 10px;
+  background-color: "rgba(0, 0, 0, 0)";
+  min-height: 10px;
 }
 
 progressbar.high > trough > progress {
-    background-color: { color_bar_high };
+  background-color: "#ffaaaa";
 }
 
 progressbar.med > trough > progress {
-    background-color: { color_bar_med };
+  background-color: "#ffeeaa";
 }
 
 trough > progress {
-    background-color: { color_bar } ;
+  background-color: "#e1eeff";
 }
 
-progress, trough {
-    min-height: { bar_height };
+progress,
+trough {
+  min-height: var(--bar-height);
 }
 
 .top-frame label {
-    font-size: { font_size_top };
+  font-size: var(--font-size);
 }
 
 .top-frame label:first-child {
-    color: { color_label };
+  color: "#87d7ff";
 }
 
 .top-frame label:not(:first-child) {
-    font-weight: bold;
+  font-weight: bold;
 }
