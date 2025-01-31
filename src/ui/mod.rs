@@ -43,7 +43,7 @@ pub mod css {
 
     pub fn get_hydrated_css(config: &config::Config, composited: bool) -> String {
         println!("[DEBUG] is composited: {:?}", composited);
-        let css = read_to_string("./assets/template.css").expect("Can't find style file.");
+        let css = read_to_string("./resources/app.css").expect("Can't find style file.");
         let base_opacity = format!("{:1.4}", &config.settings.base_opacity);
 
         css.replace("{ bar_height }", &config.settings.bar_height)

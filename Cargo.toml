@@ -9,6 +9,7 @@ repository = "https://github.com/iphands/randy"
 readme = "README.md"
 license = "GPL-3.0"
 exclude = ["/assets/*", "/scripts/*"]
+include = ["resources/*"]
 
 [profile.dev]
 opt-level = "s"
