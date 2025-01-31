@@ -64,28 +64,13 @@ pub mod css {
     pub fn load_css(config: &config::Config) {
         let provider = gtk4::CssProvider::new();
         if let Some(display) = gdk::Display::default() {
+            let css = get_hydrated_css(config, display.is_composited());
+            provider.load_from_data(&css);
             gtk4::style_context_add_provider_for_display(
                 &display,
                 &provider,
                 gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION,
             );
-
-            gtk4::style_context_add_provider_for_display(
-                &display,
-                &provider,
-                gtk4::STYLE_PROVIDER_PRIORITY_USER,
-            );
-
-            let css = get_hydrated_css(config, display.is_composited());
-            provider.load_from_data(&css);
-            // //     provider
-            // //         .load_from_data(css.as_bytes())
-            // //         .expect("Failed to load CSS");
-            // //     gtk::StyleContext::add_provider_for_screen(
-            // //         &screen,
-            // //         &provider,
-            // //         gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
-            // //     );
             println!("loaded css");
         }
     }
