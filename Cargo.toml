@@ -1,11 +1,11 @@
 [package]
-name = "randy"
-version = "1.7.0"
-authors = ["Ian Page Hands <iphands@gmail.com>"]
+name = "randy4"
+version = "0.1.0"
+authors = ["Mikhail <mpwema782@gmail.com>"]
 edition = "2021"
 description = "Conky like app in Rust"
-homepage = "https://github.com/iphands/randy"
-repository = "https://github.com/iphands/randy"
+homepage = "https://github.com/takimoysha/randy4"
+repository = "https://github.com/takimoysha/randy4"
 readme = "README.md"
 license = "GPL-3.0"
 exclude = ["/assets/*", "/scripts/*"]
@@ -23,10 +23,10 @@ lto = true
 overflow-checks = false
 
 [features]
-runtime_bench = []
-timings = []
-packaged = []
-nvidia = ["nvml-wrapper"]
+# runtime_bench = []
+# timings = []
+# packaged = []
+# nvidia = ["nvml-wrapper"]
 
 [dependencies]
 gtk4 = "0.9.5"
@@ -41,6 +41,3 @@ clap = { version = "4.5.27", features = ["derive"] }
 lazy_static = "1.4"
 sensors = { version = "0.2", optional = true }
 nvml-wrapper = { version = "0.10.0", optional = true }
-
-[dev-dependencies]
-rstest = "0.24.0"

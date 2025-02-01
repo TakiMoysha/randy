@@ -1,6 +1,4 @@
-# git-cliff ~ configuration file
-# https://git-cliff.org/docs/configuration
-
+# !TODO: change template
 [changelog]
 header = """
 # Changelog\n

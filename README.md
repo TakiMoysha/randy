@@ -56,7 +56,12 @@ Conky inspired system info viewer written in Rust / GTK4
 
 ## Running
 
+## Issues
+
+gtk4 not support move function (btw wayland)
+
 ## Credits & References
 
 1. [Origin / github.com](https://github.com/iphands/randy)
-2. [GTK4 Demo App, about implementation / github.com](https://github.com/TakiMoysha/tm-rust-book/tree/main/practice/simple-linux-widget)
+2. [GTK4 Demo App - simple css widget / github.com](https://github.com/TakiMoysha/tm-rust-book/tree/main/practice/simple-linux-widget)
+3. [Rust Gtk4 css styleing / github.com](https://github.com/jbenner-radham/rust-gtk4-css-styling)
