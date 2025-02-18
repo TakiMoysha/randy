@@ -243,54 +243,6 @@ fn add_consumers(uniq_item: &str, limit: i64, container: &gtk::Box, mems: &mut V
     container.add(&columns[2]);
 }
 
-fn init_ui(stash: &mut UiStash, vbox: &gtk::Box, ui_config: &ConfigString) {
-    for i in ui_config.as_vec().unwrap() {
-        let label = Some(i["text"].as_str().unwrap());
-        let frame = gtk::Frame::new(label);
-        frame.get_style_context().add_class("frame");
-        vbox.add(&frame);
-
-        let inner_box = gtk::Box::new(gtk::Orientation::Vertical, SPACING);
-        inner_box.get_style_context().add_class("innerbox");
-        frame.add(&inner_box);
-
-        if !i["type"].is_badvalue() {
-            let limit = i["limit"].as_i64().unwrap_or(5);
-            match i["type"].as_str().unwrap() {
-                "battery" => add_batt(
-                    &inner_box,
-                    i["items"].as_vec().unwrap_or(&Vec::new()),
-                    &mut stash.batts,
-                ),
-                "cpus" => add_cpus(
-                    &inner_box,
-                    &mut stash.cpus,
-                    i["split"].as_bool().unwrap_or(false),
-                ),
-                "mem_consumers" => add_consumers("MEM", limit, &inner_box, &mut stash.top_mems),
-                "cpu_consumers" => add_consumers("CPU", limit, &inner_box, &mut stash.top_cpus),
-                "filesystem" => add_filesystem(
-                    &inner_box,
-                    i["items"].as_vec().unwrap_or(&Vec::new()),
-                    &mut stash.fs,
-                ),
-                "net" => add_net(
-                    &inner_box,
-                    i["items"].as_vec().unwrap_or(&Vec::new()),
-                    &mut stash.net,
-                ),
-                "system" => {
-                    for item in i["items"].as_vec().unwrap_or(&Vec::new()) {
-                        let val = add_standard(item, &inner_box);
-                        stash.system.insert(item.clone(), val);
-                    }
-                }
-                _ => (),
-            }
-        }
-    }
-}
-
 fn add_batt(
     container: &gtk::Box,
     items: &Vec<ConfigString>,

@@ -23,7 +23,7 @@ mod helpers {
     }
 
     pub fn is_string(obj: &dyn Any) -> bool {
-        TypeId::of::<String>() == obj.type_id()
+        TypeId::of()
     }
 }
 
@@ -39,8 +39,8 @@ pub fn test_build_ui(app: &Application) {
     window.present();
 }
 
-use crate::config;
 use crate::stubs::SPACING;
+use crate::{config, stubs};
 
 pub mod style;
 
@@ -48,7 +48,7 @@ mod widgets {
     // !TODO:
 }
 
-pub fn init_ui(stash: &mut UiStash, layout: &gtk4::Box, widgets: &[gtk4::Widget]) {
+pub fn init_ui(stash: &mut UiStash, layout: &gtk4::Box, widgets: &Vec<gtk4::Widget>) {
     for widget in widgets.iter() {
         // let label = Some(i["text"].as_str().unwrap());
         let frame = gtk4::Frame::builder().build();
@@ -59,41 +59,10 @@ pub fn init_ui(stash: &mut UiStash, layout: &gtk4::Box, widgets: &[gtk4::Widget]
         inner_box.style_context().add_class("innerbox");
         frame.set_child(Some(&inner_box));
 
-        println!("TYPE: {:?}", widget.type_id());
+        if !widget.type_id()
 
-        // if !i["type"].is_badvalue() {
-        //     let limit = i["limit"].as_i64().unwrap_or(5);
-        //     match i["type"].as_str().unwrap() {
-        //         "battery" => add_batt(
-        //             &inner_box,
-        //             i["items"].as_vec().unwrap_or(&Vec::new()),
-        //             &mut stash.batts,
-        //         ),
-        //         "cpus" => add_cpus(
-        //             &inner_box,
-        //             &mut stash.cpus,
-        //             i["split"].as_bool().unwrap_or(false),
-        //         ),
-        //         "mem_consumers" => add_consumers("MEM", limit, &inner_box, &mut stash.top_mems),
-        //         "cpu_consumers" => add_consumers("CPU", limit, &inner_box, &mut stash.top_cpus),
-        //         "filesystem" => add_filesystem(
-        //             &inner_box,
-        //             i["items"].as_vec().unwrap_or(&Vec::new()),
-        //             &mut stash.fs,
-        //         ),
-        //         "net" => add_net(
-        //             &inner_box,
-        //             i["items"].as_vec().unwrap_or(&Vec::new()),
-        //             &mut stash.net,
-        //         ),
-        //         "system" => {
-        //             for item in i["items"].as_vec().unwrap_or(&Vec::new()) {
-        //                 let val = add_standard(item, &inner_box);
-        //                 stash.system.insert(item.clone(), val);
-        //             }
-        //         }
-        //         _ => (),
-        //     }
+        // match item {
+        //     _ => todo!(),
         // }
     }
 }
@@ -161,7 +130,6 @@ pub fn build_ui(app: &gtk4::Application, config: &config::Config) {
     };
 
     let widgets = vec![];
-    println!("widgets: {:#?}", widgets);
     init_ui(&mut stash, &root_box, &widgets);
     // update_ui(&config.settings, stash);
 
