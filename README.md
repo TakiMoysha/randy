@@ -17,6 +17,14 @@ Conky inspired system info viewer written in Rust / GTK4
   - [ ] lm-sensors support
 - [x] toml config reading
 
+### Notes
+
+Использовать `Cell` для общего контекста в приложении, что бы добавить мутабельности в `Settings`.
+Использовать стандартные конфиг и подгружать дефолтные значения из css, а не в коде.
+
+
+## Features
+
 ### Configurable Modules
 
 - Module list:

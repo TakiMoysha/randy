@@ -27,9 +27,10 @@
 // }
 
 use clap::{command, Parser};
+use gio::prelude::ActionMapExtManual;
 use gtk4::{
     glib::ExitCode,
-    prelude::{ApplicationExt, ApplicationExtManual},
+    prelude::{ApplicationExt, ApplicationExtManual, GtkApplicationExt},
 };
 use std::{path::PathBuf, rc::Rc};
 
@@ -78,8 +79,18 @@ fn main() -> ExitCode {
     let clone_config = config.clone();
 
     let app = gtk4::Application::builder().application_id(APP_ID).build();
-    // let settings = Settings::new(APP_ID).set_value("conf", &config);
-    app.connect_startup(move |_| ui::css::load_css(&clone_config));
+    app.connect_startup(move |app| on_startup(app, &clone_config));
     app.connect_activate(move |app| ui::build_ui(app, &config));
     app.run_with_args(&Vec::<String>::new())
+}
+
+fn on_startup(app: &gtk4::Application, config: &config::Config) {
+    let about = gio::ActionEntry::builder("about")
+        .activate(|_, _, _| println!("About msg"))
+        .build();
+
+    app.add_action_entries([about]);
+
+    // Loading CSS
+    ui::style::load_css(config);
 }

@@ -17,8 +17,8 @@ settings:
   # resizable: false
   # skip_taskbar: true
   timeout: 1
-  # xpos: 0
-  # ypos: 0
+  # xpos: 0 # deprecated
+  # ypos: 0 # deprecated
 
 ui:
   - text: SYSTEM

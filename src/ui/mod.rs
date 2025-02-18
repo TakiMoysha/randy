@@ -3,8 +3,6 @@ use std::collections::HashMap;
 use gtk4::prelude::*;
 use gtk4::{Application, ApplicationWindow};
 
-// mod _helpers;
-
 mod _maybe {
     #[derive(Default)]
     pub struct UiBuilder {
@@ -22,6 +20,7 @@ mod helpers {
     }
 }
 
+#[allow(dead_code)]
 pub fn test_build_ui(app: &Application) {
     let window = ApplicationWindow::builder()
         .application(app)
@@ -33,54 +32,23 @@ pub fn test_build_ui(app: &Application) {
     window.present();
 }
 
-use crate::config;
+use crate::{config, stubs};
 
-pub mod css {
-    use std::fs::read_to_string;
-
-    use crate::config;
-    use gtk4::gdk::{self, prelude::DisplayExt};
-
-    pub fn get_hydrated_css(config: &config::Config, composited: bool) -> String {
-        println!("[DEBUG] is composited: {:?}", composited);
-        let css = read_to_string("./resources/app.css").expect("Can't find style file.");
-        let base_opacity = format!("{:1.4}", &config.settings.base_opacity);
-
-        css.replace("{ bar_height }", &config.settings.bar_height)
-            .replace("{ base_opacity }", &base_opacity)
-            .replace("{ color }", &config.settings.color_text)
-            .replace("{ color_background }", &config.settings.color_bg)
-            .replace("{ color_borders }", &config.settings.color_borders)
-            .replace("{ color_bar }", &config.settings.color_bar)
-            .replace("{ color_bar_med }", &config.settings.color_bar_med)
-            .replace("{ color_bar_high }", &config.settings.bar_height)
-            .replace("{ color_label }", &config.settings.color_label)
-            .replace("{ color_trough }", &config.settings.color_trough)
-            .replace("{ font_family }", &config.settings.font_family)
-            .replace("{ font_size_top }", &config.settings.font_size)
-            .replace("{ font_size }", &config.settings.font_size)
-    }
-
-    pub fn load_css(config: &config::Config) {
-        let provider = gtk4::CssProvider::new();
-        if let Some(display) = gdk::Display::default() {
-            let css = get_hydrated_css(config, display.is_composited());
-            provider.load_from_data(&css);
-            gtk4::style_context_add_provider_for_display(
-                &display,
-                &provider,
-                gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION,
-            );
-            println!("loaded css");
-        }
-    }
-
-    #[cfg(test)]
-    mod tests {}
-}
+pub mod style;
 
 mod widgets {
-    use std::collections::HashMap;
+    // !TODO:
+}
+
+pub fn init_ui(stash: &mut UiStash, layout: &gtk4::Box, widgets: &Vec<gtk4::Widget>) {
+    for item in widgets.iter() {
+        let frame = gtk4::Frame::builder().build();
+        layout.append(&frame);
+
+        // match item {
+        //     _ => todo!(),
+        // }
+    }
 }
 
 pub struct UiStash {
@@ -101,16 +69,42 @@ pub fn build_ui(app: &gtk4::Application, config: &config::Config) {
 
     window.set_decorated(config.settings.decoration);
     window.set_resizable(config.settings.resizable);
-    window.set_default_size(375, -1);
+    window.set_default_size(400, 800);
+
+    // gtk4 migrations:
+    // - removed set_position()
+    // - removed window.set_skip_taskbar_hint(config["settings"]["skip_taskbar"].as_bool().unwrap_or(true));
+    // - removed window.set_decorated(config["settings"]["decoration"].as_bool().unwrap_or(false));
+    // - removed window.set_keep_below(!_is_interactive(&config["settings"]));
+    // - removed window.set_accept_focus(_is_interactive(&config["settings"]));
+
+    let cp = window.clipboard();
+
+    // !NOTE: WIP
+    // let screen = window.get_screen().unwrap();
+    // let visual = screen.get_rgba_visual().unwrap();
+    // window.set_visual(Some(&visual));
 
     println!("Debug {:?}", helpers::is_interactive(config));
     println!("Debug {:#?}", &config.settings);
 
-    // ===================================
-
+    // ==================================
     let layout = gtk4::Box::new(gtk4::Orientation::Vertical, 10);
+
     layout.set_css_classes(&["conainer"]);
 
+    // TODO: rewrite -> config.settings
+    let SPACING = 10;
+    let vbox = gtk4::Box::new(gtk4::Orientation::Vertical, SPACING);
+    vbox.add_css_class("container");
+
+    let from_entry = gtk4::Entry::new();
+    from_entry.set_text("Hello World");
+
+    vbox.append(&from_entry);
+    layout.append(&vbox);
+
+    // ===================================
     let mut stash = UiStash {
         // batts: HashMap::new(),
         // system: HashMap::new(),
@@ -121,10 +115,9 @@ pub fn build_ui(app: &gtk4::Application, config: &config::Config) {
         fs: HashMap::new(),
     };
 
-    // ==================================
-    // init_ui(&mut stash, &vbox, &config.ui);
-    // window.add(&vbox);
-    // window.show_all();
+    let widgets = vec![];
+    init_ui(&mut stash, &vbox, &widgets);
+    window.set_child(Some(&layout));
     // update_ui(&config.settings, stash);
 
     // ===================================
