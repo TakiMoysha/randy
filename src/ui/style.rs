@@ -1,7 +1,7 @@
 use std::fs::read_to_string;
 
 use crate::config;
-use gtk4::gdk::{self, prelude::DisplayExt};
+use gtk::gdk::{self, prelude::DisplayExt};
 
 pub fn get_hydrated_css(config: &config::Config, composited: bool) -> String {
     println!("[DEBUG] is composited: {:?}", composited);
@@ -26,15 +26,15 @@ pub fn get_hydrated_css(config: &config::Config, composited: bool) -> String {
 }
 
 pub fn load_css(config: &config::Config) {
-    let provider = gtk4::CssProvider::new();
+    let provider = gtk::CssProvider::new();
 
     if let Some(display) = gdk::Display::default() {
         let css = get_hydrated_css(config, display.is_composited());
         provider.load_from_data(&css);
-        gtk4::style_context_add_provider_for_display(
+        gtk::style_context_add_provider_for_display(
             &display,
             &provider,
-            gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION,
+            gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
         );
         println!("loaded css: {:#?}", ());
     }
