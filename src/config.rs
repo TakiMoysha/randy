@@ -41,7 +41,7 @@ pub fn find_default_config() -> PathBuf {
 }
 
 // defaults
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct Config {
     pub settings: Settings,
     pub ui: Option<Vec<Ui>>,
@@ -90,7 +90,7 @@ fn default_color_trough() -> String {
     String::from("rgba(0, 0, 0, 0)")
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct Settings {
     timeout: Option<u8>,
     #[serde(default = "default_color_text")]
@@ -124,7 +124,7 @@ pub struct Settings {
     // depreated for gtk-4, wayland
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Ui {
     r#type: String,
     text: Option<String>,
@@ -132,7 +132,7 @@ pub struct Ui {
     items: Option<Vec<UiItem>>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
 // pub struct Widget {
 pub struct UiItem {
     func: Option<String>,
@@ -185,5 +185,15 @@ mod tests {
         let config = load_config(path);
         println!("{:#?}", config);
         // assert!(config);
+    }
+
+    #[test]
+    fn should_load_equal_settings_from_toml_and_yml() {
+        let yaml_config = load_config("./config/randy.yml".into());
+        let toml_config = load_config("./config/randy.toml".into());
+
+        println!("{:#?}", yaml_config);
+        println!("{:#?}", toml_config);
+        assert_eq!(yaml_config.settings, toml_config.settings);
     }
 }

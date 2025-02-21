@@ -1,26 +1,89 @@
 [settings]
 timeout = 1
-color_bar = "#fff"
-color_label = "#eee"
-color_text = "#fff"
-decoration = false
-resizable = false
-color_background = "#000"
-font_size = "large"
+
+# base_opacity: 0.8
+# color_bar:      "#e1eeff"
+# color_bar_med:  "#ffeeaa"
+# color_bar_high: "#ffaaaa"
+# color_background: "rgba(0, 0, 0, 0.5)"
+# color_borders: "#e1eeeb"
+# color_label: "#87d7ff"
+# color_text: "#e1eeeb"
+# decoration: false
+# font_family: "\"Liberation Mono\", monospace"
+# font_size: large
+# mod_bat: 2
+# mod_fs:  2
+# mod_top: 2
+# resizable: false
+# skip_taskbar: true
+
+# color_bar = "#fff"
+# color_label = "#eee"
+# color_text = "#fff"
+# decoration = false
+# resizable = false
+# color_background = "#000"
+# font_size = "large"
 
 
 [[ui]]
-type = "cpu_consumers"
+text = "SYSTEM"
+type = "system"
+
+[[ui.item]]
+func = "hostname"
+text = "Hostname:"
+
+[[ui.item]]
+type = "kernel"
+text = "Kernel:"
+
+[[ui.item]]
+func = "uptime"
+text = "Uptime:"
+
+[[ui.item]]
+func = "cpu_usage"
+text = "CPU speed:"
+widget = "bar"
+
+[[ui.item]]
+func = "cpu_temp_sys"
+text = "CPU Temp:"
+
+[[ui.item]]
+func = "ram_usage"
+text = "RAM usage:"
+widget = "bar"
 
 [[ui.item]]
 func = "procs_count"
 text = "Running processes:"
 
-[[ui]]
-type = "mem_consumers"
-text = "TOP MEMORY"
-limit = 5
-
 [[ui.item]]
 func = "load"
 text = "Load:"
+
+[[ui]]
+text = "CPUS"
+type = "cpus"
+func = "cpus"
+
+[[ui]]
+text = "TOP CPU"
+type = "cpu_consumers"
+limit = 5
+
+[[ui]]
+text = "TOP MEMORY"
+type = "mem_consumers"
+limit = 5
+
+[[ui]]
+text = "FILESYSTEM"
+type = "filesystem"
+
+[[ui.item]]
+text = "root:"
+mount_point = "/"

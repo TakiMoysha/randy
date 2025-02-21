@@ -11,17 +11,22 @@ Conky inspired system info viewer written in Rust / GTK4
   - [ ] css loading and customization
   - [ ] benches for speed testing
   - [ ] timings feature
-  - [ ] Configurable modules [[#configurable-modules]]
-  - [ ] UI settings [[#ui-settings]]
+  - [ ] Configurable modules [#configurable-modules]
+  - [ ] UI settings [#ui-settings]
   - [ ] GPU sensors support
   - [ ] lm-sensors support
 - [x] toml config reading
+- [ ] using `gio::Settings`
 
 ### Notes
 
 Использовать `Cell` для общего контекста в приложении, что бы добавить мутабельности в `Settings`.
 Использовать стандартные конфиг и подгружать дефолтные значения из css, а не в коде.
 
+### Migration
+
+- xpos: 0 # deprecated
+- ypos: 0 # deprecated
 
 ## Features
 
@@ -73,3 +78,5 @@ gtk4 not support move function (btw wayland)
 1. [Origin / github.com](https://github.com/iphands/randy)
 2. [GTK4 Demo App - simple css widget / github.com](https://github.com/TakiMoysha/tm-rust-book/tree/main/practice/simple-linux-widget)
 3. [Rust Gtk4 css styleing / github.com](https://github.com/jbenner-radham/rust-gtk4-css-styling)
+4. [Example gtk-rs (gtk4) custom widget / github.com](https://github.com/gtk-rs/examples/blob/master/src/bin/listbox_model.rs)
+5. [About create custom widgets, Subclassing GTK widgets in Rust / www.figuiere.net](https://www.figuiere.net/technotes/notes/tn002/)

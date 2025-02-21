@@ -1,17 +1,22 @@
-# test file
 ---
 settings:
-  # color_bar:   "#fff"
-  # color_label: "#eee"
-  # color_text:  "#fff"
+  # base_opacity: 0.8
+  # color_bar:      "#e1eeff"
+  # color_bar_med:  "#ffeeaa"
+  # color_bar_high: "#ffaaaa"
+  # color_background: "rgba(0, 0, 0, 0.5)"
+  # color_borders: "#e1eeeb"
+  # color_label: "#87d7ff"
+  # color_text: "#e1eeeb"
   # decoration: false
+  # font_family: "\"Liberation Mono\", monospace"
+  # font_size: large
+  # mod_bat: 2
+  # mod_fs:  2
+  # mod_top: 2
   # resizable: false
   # skip_taskbar: true
-  # color_background: "#000"
-  # font_size: large
   timeout: 1
-  # xpos: 3380
-  # ypos: 0
 
 ui:
   - text: SYSTEM
@@ -26,18 +31,12 @@ ui:
       - func: uptime
         text: "Uptime:"
 
-      - func: cpu_speed_rpi
-        text: "CPU speed:"
-
-      - func: cpu_temp_sys
-        text: "CPU Temp:"
-
-      - func: cpu_voltage_rpi
-        text: "CPU voltage:"
-
       - func: cpu_usage
         text: "CPU usage:"
         widget: bar
+
+      - func: cpu_temp_sys
+        text: "CPU temp:"
 
       - func: ram_usage
         text: "RAM usage:"
@@ -49,10 +48,37 @@ ui:
       - func: load
         text: "Load:"
 
+      # requires that you build with --features sensors
+      # look at the output of running `sensors` from the CLI for the
+      # values of: sensor_name, label_name etc
+      #
+      # - func: sensor_info
+      #   sensor_name: k10temp-pci-00c3
+      #   label_name: Tdie
+      #   val: "{}C"
+      #   text: "CPU temp:"
+      #   whole: true
+      # - func: sensor_info
+      #   sensor_name: k10temp-pci-00c3
+      #   label_name: Vcore
+      #   val: "{}mV"
+      #   text: "CPU vcore:"
+      #   whole: false
+      # - func: sensor_info
+      #   sensor_name: thinkpad-isa-0000
+      #   label_name: fan1
+      #   val: "{} RPM"
+      #   text: "Fan speed:"
+      #   whole: true
+
+      # requires that you build with --features nvidia
+      # - func: nvidia_gpu_temp
+      #   text: "GPU Temp:"
+
   - text: CPUS
     type: cpus
     func: cpus
-    # text: "CPU"
+    # text: "CPU" 
 
   - text: TOP CPU
     type: cpu_consumers
@@ -61,6 +87,21 @@ ui:
   - text: TOP MEMORY
     type: mem_consumers
     limit: 5
+
+  # - text: NETWORKING
+  #   type: net
+  #   items:
+  #     - name: wifi
+  #       interface: wlp2s0
+
+  # - text: BATTERY
+  #   type: battery
+  #   items:
+  #     - name: bat0
+  #       path: /sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:19/PNP0C09:00/PNP0C0A:00/power_supply/BAT0
+  #       battery_text:  "Uplugged   🔋"
+  #       pluggged_text: "Plugged in ⚡"
+  #       percent_template: "{}%"
 
   - text: FILESYSTEM
     type: filesystem

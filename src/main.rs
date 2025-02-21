@@ -2,15 +2,15 @@
 // use std::{collections::HashMap, rc::Rc};
 
 // struct Cpu {
-//     mhz: gtk4::Label,
-//     progress: gtk4::ProgressBar,
-//     pct_label: gtk4::Label,
+//     mhz: gtk::Label,
+//     progress: gtk::ProgressBar,
+//     pct_label: gtk::Label,
 // }
 
 // struct TopRow {
-//     name: gtk4::Label,
-//     pid: gtk4::Label,
-//     pct: gtk4::Label,
+//     name: gtk::Label,
+//     pid: gtk::Label,
+//     pct: gtk::Label,
 // }
 
 // struct Battery {
@@ -26,13 +26,13 @@
 //     last_instant: Instant,
 // }
 
-use clap::{command, Parser};
-use gio::prelude::ActionMapExtManual;
-use gtk4::{
-    glib::ExitCode,
-    prelude::{ApplicationExt, ApplicationExtManual, GtkApplicationExt},
-};
 use std::{path::PathBuf, rc::Rc};
+
+use clap::{command, Parser};
+
+use gtk::gio::prelude::*;
+use gtk::glib::ExitCode;
+use gtk::prelude::*;
 
 mod config;
 mod stubs;
@@ -78,19 +78,19 @@ fn main() -> ExitCode {
     });
     let clone_config = config.clone();
 
-    let app = gtk4::Application::builder().application_id(APP_ID).build();
+    let app = gtk::Application::builder().application_id(APP_ID).build();
     app.connect_startup(move |app| on_startup(app, &clone_config));
     app.connect_activate(move |app| ui::build_ui(app, &config));
     app.run_with_args(&Vec::<String>::new())
 }
 
-fn on_startup(app: &gtk4::Application, config: &config::Config) {
-    let about = gio::ActionEntry::builder("about")
-        .activate(|_, _, _| println!("About msg"))
-        .build();
+fn on_startup(app: &gtk::Application, config: &config::Config) {
+    // ======================================
+    // let about = gtk::gio::ActionEntry::builder("about")
+    //     .activate(|_, _, _| println!("About msg"))
+    //     .build();
+    // app.add_action_entries([about]);
 
-    app.add_action_entries([about]);
-
-    // Loading CSS
+    // ======================================
     ui::style::load_css(config);
 }
