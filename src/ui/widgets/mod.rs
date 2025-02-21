@@ -27,6 +27,7 @@ pub mod battery {
             type ParentType = gtk::Box;
         }
 
+        //
         impl ObjectImpl for BatteryWidget {
             fn constructed(&self) {
                 self.parent_constructed();
@@ -34,15 +35,19 @@ pub mod battery {
             }
         }
 
+        // base class all widgets, manages the widget lifecycle, states and style
         impl WidgetImpl for BatteryWidget {}
 
+        // Arranges child widgets into a single row or column.
         impl BoxImpl for BatteryWidget {}
     }
 
     glib::wrapper! {
         pub struct BatteryWidget(ObjectSubclass<imp::BatteryWidget>)
-            @extends gtk::Widget, gtk::Box,
-            @implements gtk::Buildable, gtk::Orientable;
+            @extends gtk::Widget, gtk::Box
+            // ,
+            // @implements gtk::Buildable, gtk::Orientable
+        ;
     }
 
     impl BatteryWidget {
@@ -52,6 +57,9 @@ pub mod battery {
             imp.layout.set_orientation(gtk::Orientation::Horizontal);
             imp.layout.set_css_classes(&["battery-widget"]);
 
+            let test_widget = gtk::Entry::builder().build();
+            imp.layout.append(&test_widget);
+            obj.append(&imp.layout);
             obj
         }
 

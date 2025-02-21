@@ -121,14 +121,14 @@ pub fn build_ui(app: &gtk::Application, config: &config::Config) {
     };
 
     // List Widgets - a vertical list of widgets
-    let widgets_list = gtk::ListBox::builder().build();
     let battery_widget = BatteryWidget::new();
-    widgets_list.append(&battery_widget);
-    let system_widget = BatteryWidget::new();
-    widgets_list.append(&system_widget);
-    println!("DEBUG: widgets: {:#?}", &widgets_list);
-
     layout.append(&battery_widget);
+    let system_widget = BatteryWidget::new();
+    layout.append(&system_widget);
+    let test_widget = gtk::Entry::builder().build();
+    layout.append(&test_widget);
+    println!("DEBUG: widgets: {:#?}", &layout);
+
     // let frame = gtk::Frame::builder().build();
     // frame.style_context().add_class("frame");
     // layout.append(&frame);
