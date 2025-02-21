@@ -1,7 +1,7 @@
 pub mod battery {
     use gtk::{
         glib::{self, subclass::types::ObjectSubclassIsExt},
-        prelude::BoxExt,
+        prelude::{BoxExt, OrientableExt, WidgetExt},
     };
 
     pub mod imp {
@@ -17,8 +17,7 @@ pub mod battery {
 
         #[derive(Default, Debug)]
         pub struct BatteryWidget {
-            pub label: gtk::Label,
-            pub bar: gtk::ProgressBar,
+            pub layout: gtk::Box,
         }
 
         #[glib::object_subclass]
@@ -31,7 +30,7 @@ pub mod battery {
         impl ObjectImpl for BatteryWidget {
             fn constructed(&self) {
                 self.parent_constructed();
-                self.obj().setup();
+                self.obj().check();
             }
         }
 
@@ -41,19 +40,24 @@ pub mod battery {
     }
 
     glib::wrapper! {
-        pub struct BatteryWidget(ObjectSubclass<imp::BatteryWidget>) @extends gtk::Widget, gtk::Box;
+        pub struct BatteryWidget(ObjectSubclass<imp::BatteryWidget>)
+            @extends gtk::Widget, gtk::Box,
+            @implements gtk::Buildable, gtk::Orientable;
     }
 
     impl BatteryWidget {
         pub fn new() -> Self {
-            glib::Object::builder().build()
+            let obj: Self = glib::Object::builder().build();
+            let imp = obj.imp();
+            imp.layout.set_orientation(gtk::Orientation::Horizontal);
+            imp.layout.set_css_classes(&["battery-widget"]);
+
+            obj
         }
 
-        pub(crate) fn setup(&self) {
+        pub(crate) fn check(&self) {
             let imp = self.imp();
-
-            self.append(&imp.label);
-            self.append(&imp.bar);
+            println!("DEBUG: check");
         }
     }
 }

@@ -92,5 +92,5 @@ fn on_startup(app: &gtk::Application, config: &config::Config) {
     // app.add_action_entries([about]);
 
     // ======================================
-    ui::style::load_css(config);
+    ui::load_css(config);
 }

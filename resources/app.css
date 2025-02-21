@@ -106,3 +106,8 @@ trough {
 .top-frame label:not(:first-child) {
   font-weight: bold;
 }
+
+/* BATTERY WIDGET  */
+.battery-widget {
+  background-color: red;
+}
