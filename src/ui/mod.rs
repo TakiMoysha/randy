@@ -125,8 +125,6 @@ pub fn build_ui(app: &gtk::Application, config: &config::Config) {
     layout.append(&battery_widget);
     let system_widget = BatteryWidget::new();
     layout.append(&system_widget);
-    let test_widget = gtk::Entry::builder().build();
-    layout.append(&test_widget);
     println!("DEBUG: widgets: {:#?}", &layout);
 
     // let frame = gtk::Frame::builder().build();
