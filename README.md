@@ -16,7 +16,7 @@ Conky inspired system info viewer written in Rust / GTK4
   - [ ] GPU sensors support
   - [ ] lm-sensors support
 - [x] toml config reading
-- [ ] using `gio::Settings`
+- [ ] using `gio::Settings` instead of `config::Config`
 
 ### Notes
 
@@ -80,3 +80,4 @@ gtk4 not support move function (btw wayland)
 3. [Rust Gtk4 css styleing / github.com](https://github.com/jbenner-radham/rust-gtk4-css-styling)
 4. [Example gtk-rs (gtk4) custom widget / github.com](https://github.com/gtk-rs/examples/blob/master/src/bin/listbox_model.rs)
 5. [About create custom widgets, Subclassing GTK widgets in Rust / www.figuiere.net](https://www.figuiere.net/technotes/notes/tn002/)
+6. [Object subclass with imp (gtk-rs) / github.com](https://github.com/waylyrics/waylyrics/blob/master/src/app/search_window/mod.rs)

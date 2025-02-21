@@ -1,5 +1,8 @@
 pub mod battery {
-    use gtk::glib::{self, subclass::types::ObjectSubclassIsExt};
+    use gtk::{
+        glib::{self, subclass::types::ObjectSubclassIsExt},
+        prelude::BoxExt,
+    };
 
     pub mod imp {
         use gtk::{
@@ -13,7 +16,10 @@ pub mod battery {
         use super::*;
 
         #[derive(Default, Debug)]
-        pub struct BatteryWidget {}
+        pub struct BatteryWidget {
+            pub label: gtk::Label,
+            pub bar: gtk::ProgressBar,
+        }
 
         #[glib::object_subclass]
         impl ObjectSubclass for BatteryWidget {
@@ -45,6 +51,9 @@ pub mod battery {
 
         pub(crate) fn setup(&self) {
             let imp = self.imp();
+
+            self.append(&imp.label);
+            self.append(&imp.bar);
         }
     }
 }
