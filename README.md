@@ -17,6 +17,7 @@ Conky inspired system info viewer written in Rust / GTK4
   - [ ] lm-sensors support
 - [x] toml config reading
 - [ ] using `gio::Settings` instead of `config::Config`
+- [ ] XDG config support
 
 ### Notes
 
