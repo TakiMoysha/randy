@@ -27,7 +27,6 @@ pub mod battery {
             type ParentType = gtk::Box;
         }
 
-        //
         impl ObjectImpl for BatteryWidget {
             fn constructed(&self) {
                 self.parent_constructed();

@@ -23,6 +23,7 @@ fn build_full_paths() -> Vec<PathBuf> {
             }
         }
     }
+    paths.shrink_to_fit();
     paths
 }
 
