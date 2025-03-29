@@ -44,7 +44,6 @@ pub mod battery {
     glib::wrapper! {
         pub struct BatteryWidget(ObjectSubclass<imp::BatteryWidget>)
             @extends gtk::Widget, gtk::Box
-            // ,
             // @implements gtk::Buildable, gtk::Orientable
         ;
     }
