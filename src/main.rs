@@ -76,7 +76,7 @@ fn main() -> ExitCode {
 
     let config = Rc::new(match args.config {
         Some(config_path) => {
-            println!("Using config file: {}", config_path);
+            println!("[LOG] Using config file: {}", config_path);
             Config::load_config(Some(PathBuf::from(config_path)))
         }
         None => Config::load_config(None),

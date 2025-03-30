@@ -1,30 +1,9 @@
-:root {
-  font-family: "monospace";
-  font-size: 10pt;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: "#4c4c4c";
-
-  --opacity: 1;
-  --bar-height: 10px;
-  --font-family: "monospace";
-  --font-size: 10pt;
-
-  --color_background: "#f2f1f0";
-  --color_foreground: "#4c4c4c";
-  --color_border: "#e1eeeb";
-  --color_label: "#87d7ff";
-  --color_bar: "#e1eeff";
-  --color_bar_high: "#ffaaaa";
-  --color_bar_med: "#ffeeaa";
-  --color_trough: "#00000000";
-}
-
 window {
-  background-color: #f2f1f0;
-  color: #4c4c4c;
+  font-family: var(--font_family);
+  font-size: var(--font_size);
   opacity: var(--opacity);
-  font-family: var(--font-family);
-  font-size: var(--font-size);
+  background-color: var(--color_bg);
+  color: var(--color_fg);
 }
 
 .container {
@@ -104,5 +83,5 @@ trough {
 
 /* BATTERY WIDGET  */
 .battery-widget {
-  background-color: red;
+  background-color: var(--debug_color);
 }

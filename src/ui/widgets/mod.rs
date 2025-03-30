@@ -63,7 +63,7 @@ pub mod battery {
 
         pub(crate) fn check(&self) {
             let imp = self.imp();
-            println!("DEBUG: check");
+            dbg!("value FnCheck");
         }
     }
 }

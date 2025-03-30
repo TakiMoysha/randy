@@ -1,8 +1,8 @@
 use std::any::Any;
 use std::collections::HashMap;
 
-use gtk::prelude::*;
 use gtk::ApplicationWindow;
+use gtk::prelude::*;
 
 use crate::config;
 use crate::stubs::SPACING;
@@ -10,7 +10,6 @@ use crate::stubs::SPACING;
 mod helpers;
 mod widgets;
 pub use widgets::battery::BatteryWidget;
-
 
 pub fn mount_widgets(stash: &mut UiStash, layout: &gtk::Box, widgets: &[gtk::Widget]) {
     for widget in widgets.iter() {
@@ -94,9 +93,6 @@ pub fn build_ui(app: &gtk::Application, config: &config::Config) {
     // let visual = screen.get_rgba_visual().unwrap();
     // window.set_visual(Some(&visual));
 
-    println!("Debug {:?}", helpers::is_interactive(config));
-    println!("Debug {:#?}", &config.settings);
-
     // ==================================
     let layout = gtk::Box::new(gtk::Orientation::Vertical, 10);
     layout.set_css_classes(&["conainer"]);
@@ -123,7 +119,7 @@ pub fn build_ui(app: &gtk::Application, config: &config::Config) {
     layout.append(&battery_widget);
     let system_widget = BatteryWidget::new();
     layout.append(&system_widget);
-    println!("DEBUG: widgets: {:#?}", &layout);
+    dbg!("DEBUG: widgets: {:#?}", &layout);
 
     // let frame = gtk::Frame::builder().build();
     // frame.style_context().add_class("frame");

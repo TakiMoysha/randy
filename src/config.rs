@@ -46,7 +46,7 @@ impl Default for Settings {
             resizable: false,
             font_size: "large".to_string(),
             font_family: "monospace".to_string(),
-            base_opacity: 1.0_f64,
+            base_opacity: 0.1,
             bar_height: "10px".to_string(),
         }
     }
