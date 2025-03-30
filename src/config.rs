@@ -14,8 +14,6 @@ pub struct Config {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Settings {
     pub timeout: u8,
-    pub style: String,
-
     pub color_text: String,
     pub color_bar: String,
     pub color_bar_med: String,
@@ -36,7 +34,6 @@ impl Default for Settings {
     fn default() -> Self {
         Settings {
             timeout: 1,
-            style: "./static/app.css".to_string(),
             color_text: "#e1eeeb".to_string(),
             color_bar: "#e1eeff".to_string(),
             color_bar_med: "#ffeeaa".to_string(),

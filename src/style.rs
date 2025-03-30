@@ -28,11 +28,10 @@ pub fn get_hydrated_css(config: &config::Config, style_path: &PathBuf, composite
 
 pub fn load_css(config: &config::Config) {
     let provider = gtk::CssProvider::new();
-    let style_path = PathBuf::from(&config.settings.style);
+    let default_style = include_str!("style.css").to_string();
 
     if let Some(display) = gdk::Display::default() {
-        let css = read_to_string(&style_path).expect("Can't find style file.");
-        provider.load_from_data(&css);
+        provider.load_from_data(&default_style);
         gtk::style_context_add_provider_for_display(
             &display,
             &provider,
