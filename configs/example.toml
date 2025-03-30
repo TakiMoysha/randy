@@ -29,14 +29,14 @@ timeout = 1
 
 [[ui]]
 text = "SYSTEM"
-type = "system"
+block = "system"
 
 [[ui.item]]
 func = "hostname"
 text = "Hostname:"
 
 [[ui.item]]
-type = "kernel"
+block = "kernel"
 text = "Kernel:"
 
 [[ui.item]]
@@ -67,22 +67,22 @@ text = "Load:"
 
 [[ui]]
 text = "CPUS"
-type = "cpus"
+block = "cpus"
 func = "cpus"
 
 [[ui]]
 text = "TOP CPU"
-type = "cpu_consumers"
+block = "cpu_consumers"
 limit = 5
 
 [[ui]]
 text = "TOP MEMORY"
-type = "mem_consumers"
+block = "mem_consumers"
 limit = 5
 
 [[ui]]
 text = "FILESYSTEM"
-type = "filesystem"
+block = "filesystem"
 
 [[ui.item]]
 text = "root:"

@@ -35,10 +35,13 @@ use gtk::glib::ExitCode;
 use gtk::prelude::*;
 
 mod config;
+mod fs;
+mod parser;
 mod stubs;
 mod ui;
 
-use config::{find_default_config, load_config};
+use config::Config;
+use stubs::APP_ID;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -46,8 +49,6 @@ struct Cli {
     #[arg(short, long)]
     config: Option<String>,
 }
-
-const APP_ID: &str = "org.ahands.randy";
 
 mod app {
     use crate::config;
@@ -73,8 +74,11 @@ fn main() -> ExitCode {
     let args = Cli::parse();
 
     let config = Rc::new(match args.config {
-        Some(config_path) => load_config(PathBuf::from(config_path)),
-        None => load_config(find_default_config()),
+        Some(config_path) => {
+            println!("Using config file: {}", config_path);
+            Config::load_config(Some(PathBuf::from(config_path)))
+        }
+        None => Config::load_config(None),
     });
     let clone_config = config.clone();
 

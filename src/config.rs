@@ -1,197 +1,84 @@
 use std::path::PathBuf;
 
 use serde::{Deserialize, Serialize};
+use serde_inline_default::serde_inline_default;
 
-const SUPPORTED_FORMATS: [&str; 2] = ["yml", "toml"];
-const DEFAULT_NAME: [&str; 2] = ["randy", ".randy"];
-const DEFAULT_PATHS: [&str; 3] = ["XDG_CONFIG_HOME", "HOME", "/etc"];
-
-fn build_full_paths() -> Vec<PathBuf> {
-    let mut paths = Vec::new();
-    for path in DEFAULT_PATHS {
-        if let Ok(path) = std::env::var(path) {
-            for name in DEFAULT_NAME {
-                for format in SUPPORTED_FORMATS {
-                    paths.push(PathBuf::from(format!("{path}/{name}.{format}")));
-                }
-            }
-        } else {
-            for name in DEFAULT_NAME {
-                for format in SUPPORTED_FORMATS {
-                    paths.push(PathBuf::from(format!("{path}/{name}.{format}")));
-                }
-            }
-        }
-    }
-    paths.shrink_to_fit();
-    paths
-}
-
-/// Find the default config file or exit with code 1
-pub fn find_default_config() -> PathBuf {
-    let paths = build_full_paths();
-    let path = paths.iter().find(|f| f.exists()).cloned();
-
-    path.unwrap_or_else(|| {
-        eprintln!("Could not find a randy.yml config file.\n Checked:");
-        paths.iter().for_each(|f| eprintln!("\t - {}", f.display()));
-        eprintln!("Please put a randy.yml config file in one of those places or use --config.");
-        eprintln!("Exmples: https://github.com/iphands/randy/tree/main/config");
-        std::process::exit(1);
-    })
-}
+use crate::{fs::load_user_config_path, parser::parser_to_config};
 
 // defaults
-#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Config {
     pub settings: Settings,
-    pub ui: Option<Vec<Ui>>,
+    pub ui: Option<Vec<UiContainer>>,
 }
 
-fn default_as_false() -> bool {
-    false
-}
-fn default_text_size() -> String {
-    String::from("large")
-}
-fn default_text_font_family() -> String {
-    String::from("monospace")
-}
-fn default_base_opacity() -> f64 {
-    1.0_f64
-}
-fn default_bar_height() -> String {
-    String::from("10px")
-}
-fn default_color_text() -> String {
-    String::from("#e1eeeb")
-}
-fn default_color_bar() -> String {
-    String::from("#e1eeff")
-}
-fn default_color_bar_high() -> String {
-    String::from("#ffaaaa")
-}
-fn default_color_bar_med() -> String {
-    String::from("#ffeeaa")
-}
-fn default_color_borders() -> String {
-    String::from("#e1eeeb")
-}
-fn default_color_label() -> String {
-    String::from("#87d7ff")
-}
-fn default_color_background() -> String {
-    String::from("rgba(0, 0, 0, 0.5)")
-}
-fn default_color_trough() -> String {
-    String::from("rgba(0, 0, 0, 0)")
-}
-
-#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[serde_inline_default]
+#[derive(Debug, Default, Serialize, Deserialize)]
 pub struct Settings {
-    timeout: Option<u8>,
-    #[serde(default = "default_color_text")]
-    pub color_text: String,
-    #[serde(default = "default_color_bar")]
-    pub color_bar: String,
-    #[serde(default = "default_color_bar_med")]
-    pub color_bar_med: String,
-    #[serde(default = "default_color_bar_high")]
-    pub color_bar_high: String,
-    #[serde(default = "default_color_label")]
-    pub color_label: String,
-    #[serde(default = "default_color_background")]
-    pub color_bg: String,
-    #[serde(default = "default_color_borders")]
-    pub color_borders: String,
-    #[serde(default = "default_color_trough")]
-    pub color_trough: String,
-    #[serde(default = "default_as_false")]
+    pub timeout: Option<u8>,
+
+    #[serde_inline_default("#e1eeeb")]
+    pub color_text: &'static str,
+    #[serde_inline_default("#e1eeff")]
+    pub color_bar: &'static str,
+    #[serde_inline_default("#ffeeaa")]
+    pub color_bar_med: &'static str,
+    #[serde_inline_default("#ffaaaa")]
+    pub color_bar_high: &'static str,
+    #[serde_inline_default("#87d7ff")]
+    pub color_label: &'static str,
+    #[serde_inline_default("#e1eeeb")]
+    pub color_borders: &'static str,
+    #[serde_inline_default("rgba(0, 0, 0, 0.5)")]
+    pub color_bg: &'static str,
+    #[serde_inline_default("rgba(0, 0, 0, 0)")]
+    pub color_trough: &'static str,
+    #[serde_inline_default(false)]
     pub decoration: bool,
-    #[serde(default = "default_as_false")]
+    #[serde_inline_default(false)]
     pub resizable: bool,
-    #[serde(default = "default_text_size")]
-    pub font_size: String,
-    #[serde(default = "default_text_font_family")]
-    pub font_family: String,
-    #[serde(default = "default_base_opacity")]
+    #[serde_inline_default("large")]
+    pub font_size: &'static str,
+    #[serde_inline_default("monospace")]
+    pub font_family: &'static str,
+    #[serde_inline_default(1.0_f64)]
     pub base_opacity: f64,
-    #[serde(default = "default_bar_height")]
-    pub bar_height: String,
-    // depreated for gtk-4, wayland
+    #[serde_inline_default("10px")]
+    pub bar_height: &'static str,
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
-pub struct Ui {
-    r#type: String,
-    text: Option<String>,
+pub struct UiContainer {
+    block: String,
     limit: Option<u8>,
-    items: Option<Vec<UiItem>>,
+    text: Option<String>,
+    items: Option<Vec<UiBlock>>,
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
-// pub struct Widget {
-pub struct UiItem {
-    func: Option<String>,
+pub struct UiBlock {
     text: Option<String>,
 }
 
-pub fn load_config(path: PathBuf) -> Config {
-    println!("Using config file: {}", path.display());
-    let file = std::fs::read_to_string(&path).expect("Unable to read config file");
-
-    match path.extension().and_then(|s| s.to_str()) {
-        Some("yml") => serde_yml::from_str(&file).expect("Can't parse config file"),
-        Some("toml") => toml::from_str(&file).expect("Can't parse config file"),
-        _ => panic!("Unknown config format: {:?}", path.extension()),
+impl Config {
+    pub fn load_config(path: Option<PathBuf>) -> Config {
+        let path = if let Some(path) = path {
+            path
+        } else {
+            load_user_config_path().expect("Unable to load config file")
+        };
+        let content = std::fs::read_to_string(&path).expect("Unable to read config file");
+        let config = parser_to_config(&content);
+        config
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    fn load_test_config_from_env() -> PathBuf {
-        std::env::set_var(
-            "XDG_CONFIG_HOME",
-            std::env::current_dir().unwrap().join("config"),
-        );
-        find_default_config()
-    }
-
-    #[test]
-    fn should_get_all_paths() {
-        let paths = build_full_paths();
-        assert!(!paths.is_empty());
-    }
-
-    #[test]
-    fn should_return_default_yaml_config() {
-        let path = load_test_config_from_env();
-        assert!(path.extension().unwrap() == "yml", "Bad format: {:?}", path);
-        assert!(path.exists(), "Can't find default config, it exists?");
-    }
-
-    #[ignore = "how set default extension config?"]
-    #[test]
-    fn should_return_default_toml_config() {}
-
-    #[test]
-    fn should_parse_config() {
-        let path = load_test_config_from_env();
-        let config = load_config(path);
-        println!("{:#?}", config);
-        // assert!(config);
-    }
-
-    #[test]
-    fn should_load_equal_settings_from_toml_and_yml() {
-        let yaml_config = load_config("./config/randy.yml".into());
-        let toml_config = load_config("./config/randy.toml".into());
-
-        println!("{:#?}", yaml_config);
-        println!("{:#?}", toml_config);
-        assert_eq!(yaml_config.settings, toml_config.settings);
+impl Default for Config {
+    fn default() -> Self {
+        let default_ui: Vec<UiContainer> = vec![];
+        Config {
+            settings: Settings::default(),
+            ui: Some(default_ui),
+        }
     }
 }
