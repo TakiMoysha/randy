@@ -1,7 +1,7 @@
 use super::Config;
 
 pub(crate) fn parser_to_config(config_string: &str) -> Config {
-    toml::from_str(config_string).expect("Can't parse config file")
+    toml::from_str(config_string).expect("Bad config file, can't parse.")
 }
 
 #[cfg(test)]
@@ -21,7 +21,7 @@ mod tests {
                 [[ui.item]] \
                 block = 'kernel' \
                 text = 'Kernel:' ";
-        let config = parser_to_config(&config_string);
+        let config = parser_to_config(config_string);
         assert!(config.ui.unwrap().len() == 1);
     }
 }

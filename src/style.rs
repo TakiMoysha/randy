@@ -1,13 +1,14 @@
 use std::fs::read_to_string;
+use std::path::PathBuf;
 
 use crate::config;
-use gtk::gdk::{self, prelude::DisplayExt};
+use gtk::gdk;
 
-pub fn get_hydrated_css(config: &config::Config, composited: bool) -> String {
+#[deprecated]
+pub fn get_hydrated_css(config: &config::Config, style_path: &PathBuf, composited: bool) -> String {
     println!("[DEBUG] is composited: {:?}", composited);
     // !TODO: swap to config.css_path
-    let path = "./resources/app.css";
-    let css = read_to_string(path).expect("Can't find style file.");
+    let css = read_to_string(style_path).expect("Can't find style file.");
     let base_opacity = format!("{:1.4}", &config.settings.base_opacity);
 
     css.replace("{ bar_height }", &config.settings.bar_height)
@@ -27,9 +28,10 @@ pub fn get_hydrated_css(config: &config::Config, composited: bool) -> String {
 
 pub fn load_css(config: &config::Config) {
     let provider = gtk::CssProvider::new();
+    let style_path = PathBuf::from(&config.settings.style);
 
     if let Some(display) = gdk::Display::default() {
-        let css = get_hydrated_css(config, display.is_composited());
+        let css = read_to_string(&style_path).expect("Can't find style file.");
         provider.load_from_data(&css);
         gtk::style_context_add_provider_for_display(
             &display,
@@ -41,4 +43,9 @@ pub fn load_css(config: &config::Config) {
 }
 
 #[cfg(test)]
-mod tests {}
+mod tests {
+    use super::*;
+
+    #[test]
+    fn should_load_gtk_css() {}
+}

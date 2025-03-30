@@ -11,8 +11,6 @@ mod helpers;
 mod widgets;
 pub use widgets::battery::BatteryWidget;
 
-mod style;
-pub use style::load_css;
 
 pub fn mount_widgets(stash: &mut UiStash, layout: &gtk::Box, widgets: &[gtk::Widget]) {
     for widget in widgets.iter() {

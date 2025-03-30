@@ -28,7 +28,7 @@
 
 use std::{path::PathBuf, rc::Rc};
 
-use clap::{command, Parser};
+use clap::{Parser, command};
 
 use gtk::gio::prelude::*;
 use gtk::glib::ExitCode;
@@ -38,6 +38,7 @@ mod config;
 mod fs;
 mod parser;
 mod stubs;
+mod style;
 mod ui;
 
 use config::Config;
@@ -96,5 +97,5 @@ fn on_startup(app: &gtk::Application, config: &config::Config) {
     // app.add_action_entries([about]);
 
     // ======================================
-    ui::load_css(config);
+    style::load_css(config);
 }
